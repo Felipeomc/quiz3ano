@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz OBR 2026 - 3º ano. ESC Robótica</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f6f9;
+padding:20px;
+}
+
+.quiz-container{
+background:white;
+max-width:850px;
+margin:auto;
+padding:24px;
+border-radius:16px;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+h1{
+text-align:center;
+color:#1f3c88;
+}
+
+label{
+font-weight:bold;
+display:block;
+margin-bottom:8px;
+}
+
+input{
+width:100%;
+box-sizing:border-box;
+padding:14px;
+font-size:16px;
+border:1px solid #cbd5e1;
+border-radius:10px;
+margin-bottom:14px;
+}
+
+.question{
+font-size:22px;
+margin-bottom:20px;
+font-weight:bold;
+}
+
+.option{
+display:block;
+width:100%;
+margin:10px 0;
+padding:14px;
+border:none;
+border-radius:10px;
+background:#e8edff;
+cursor:pointer;
+font-size:16px;
+text-align:left;
+}
+
+.option:hover{
+background:#d7e0ff;
+}
+
+.option:disabled{
+cursor:not-allowed;
+}
+
+.correct{
+background:#b8f5c0 !important;
+}
+
+.wrong{
+background:#ffbebe !important;
+}
+
+.feedback{
+margin-top:18px;
+padding:14px;
+border-radius:10px;
+display:none;
+background:#f1f5f9;
+line-height:1.5;
+}
+
+.btn{
+margin-top:20px;
+padding:12px 18px;
+border:none;
+border-radius:10px;
+background:#1f3c88;
+color:white;
+cursor:pointer;
+font-size:16px;
+}
+
+.btn:hover{
+background:#162b63;
+}
+
+.next-btn{
+display:none;
+}
+
+.secondary-btn{
+background:#475569;
+margin-left:8px;
+}
+
+.score{
+text-align:center;
+font-size:24px;
+font-weight:bold;
+margin-top:20px;
+}
+
+.student-info{
+background:#f8fafc;
+border:1px solid #e2e8f0;
+border-radius:12px;
+padding:16px;
+margin-top:18px;
+}
+
+.results-table{
+width:100%;
+border-collapse:collapse;
+margin-top:18px;
+font-size:14px;
+}
+
+.results-table th,
+.results-table td{
+border:1px solid #cbd5e1;
+padding:8px;
+text-align:left;
+vertical-align:top;
+}
+
+.results-table th{
+background:#e8edff;
+}
+
+.notice{
+margin-top:16px;
+background:#fff7ed;
+border:1px solid #fed7aa;
+border-radius:10px;
+padding:12px;
+line-height:1.4;
+font-size:15px;
+}
+
+.small{
+font-size:14px;
+color:#475569;
+line-height:1.4;
+}
+
+@media (max-width:600px){
+.quiz-container{
+padding:16px;
+}
+
+.question{
+font-size:19px;
+}
+
+.secondary-btn{
+margin-left:0;
+display:block;
+width:100%;
+}
+
+.btn{
+width:100%;
+}
+}
+</style>
+</head>
+
+<body>
+
+<div class="quiz-container">
+<h1>Quiz OBR 2026 - 3º ano. ESC Robótica 🚀</h1>
+
+<div id="startScreen">
+<div class="student-info">
+<label for="studentName">Digite seu nome:</label>
+<input type="text" id="studentName" placeholder="Exemplo: Maria Silva">
+<button class="btn" onclick="startQuiz()">Começar quiz</button>
+<p class="small">Ao final, aparecerá um botão para enviar o resultado para a planilha do professor. O aluno não precisa ter e-mail.</p>
+</div>
+</div>
+
+<div id="quiz"></div>
+
+<div class="score" id="score"></div>
+</div>
+
+<iframe name="hidden_iframe" style="display:none;"></iframe>
+
+<script>
+
+// URL do Google Apps Script do professor.
+// Depois de criar o Apps Script e publicar como Web App, cole a URL entre as aspas abaixo.
+const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxkXYZ_9Lelglq-MFJrkplMW-5HbCr1yOqxUXC091aJKnWoIKQx-zdIdHs0ugrD9KGznw/exec";
+
+const questions = [
+
+{
+question:"1. Qual é a principal função de um sensor em um robô?",
+options:[
+"Decorar o robô",
+"Fazer o robô perceber o ambiente",
+"Aumentar o peso do robô",
+"Trocar as rodas"
+],
+answer:1,
+explanation:"Sensores ajudam o robô a identificar obstáculos, luz, distância e outras informações do ambiente."
+},
+
+{
+question:"2. Qual componente funciona como o cérebro do robô?",
+options:[
+"Motor",
+"Roda",
+"Controlador",
+"Parafuso"
+],
+answer:2,
+explanation:"O controlador processa informações e toma decisões no robô."
+},
+
+{
+question:"3. Para que servem os motores em um robô?",
+options:[
+"Produzir luz",
+"Movimentar o robô",
+"Fazer barulho",
+"Guardar energia"
+],
+answer:1,
+explanation:"Os motores são responsáveis pelos movimentos do robô."
+},
+
+{
+question:"4. O que significa programar um robô?",
+options:[
+"Pintar o robô",
+"Criar instruções para ele executar",
+"Trocar peças",
+"Lavar o robô"
+],
+answer:1,
+explanation:"Programar significa criar comandos que o robô seguirá."
+},
+
+{
+question:"5. O que o robô pode fazer ao detectar um obstáculo?",
+options:[
+"Ignorar",
+"Desviar",
+"Voar",
+"Explodir"
+],
+answer:1,
+explanation:"Com sensores e programação, o robô pode desviar de obstáculos."
+},
+
+{
+question:"6. Qual sensor pode ajudar um robô a seguir uma linha preta?",
+options:[
+"Sensor de luz",
+"Sensor de chuva",
+"Sensor de fumaça",
+"Sensor de vento"
+],
+answer:0,
+explanation:"O sensor de luz identifica diferenças entre claro e escuro para seguir linhas."
+},
+
+{
+question:"7. O que é necessário para um robô funcionar?",
+options:[
+"Apenas tinta",
+"Somente rodas",
+"Energia elétrica",
+"Água"
+],
+answer:2,
+explanation:"Os robôs precisam de energia para alimentar motores, sensores e controladores."
+},
+
+{
+question:"8. Qual destes pode ser considerado um robô?",
+options:[
+"Uma vassoura comum",
+"Um aspirador automático",
+"Um lápis",
+"Uma cadeira"
+],
+answer:1,
+explanation:"Aspiradores automáticos utilizam sensores e programação para se locomover."
+},
+
+{
+question:"9. O que acontece se um robô não tiver programação?",
+options:[
+"Ele fica mais rápido",
+"Ele age sozinho",
+"Ele não sabe o que fazer",
+"Ele começa a voar"
+],
+answer:2,
+explanation:"Sem programação, o robô não recebe instruções para executar tarefas."
+},
+
+{
+question:"10. O que faz um sensor ultrassônico?",
+options:[
+"Mede distância",
+"Produz música",
+"Pinta objetos",
+"Acende lâmpadas"
+],
+answer:0,
+explanation:"Sensores ultrassônicos são usados para medir distância e detectar obstáculos."
+},
+
+{
+question:"11. O que é um algoritmo?",
+options:[
+"Um tipo de robô",
+"Uma sequência de passos",
+"Uma bateria",
+"Uma roda"
+],
+answer:1,
+explanation:"Algoritmo é um conjunto organizado de instruções para resolver um problema."
+},
+
+{
+question:"12. Em competições de robótica, os robôs precisam:",
+options:[
+"Seguir regras e cumprir desafios",
+"Ser pintados de azul",
+"Ter sempre quatro rodas",
+"Ser gigantes"
+],
+answer:0,
+explanation:"As competições possuem regras específicas e desafios que os robôs devem cumprir."
+},
+
+{
+question:"13. Qual destes NÃO é um componente comum em robôs?",
+options:[
+"Sensor",
+"Motor",
+"Controlador",
+"Travesseiro"
+],
+answer:3,
+explanation:"Sensores, motores e controladores fazem parte da estrutura de muitos robôs."
+},
+
+{
+question:"14. Para que serve uma bateria em um robô?",
+options:[
+"Dar energia",
+"Produzir fumaça",
+"Fazer barulho",
+"Refletir luz"
+],
+answer:0,
+explanation:"A bateria fornece energia elétrica para o funcionamento do robô."
+},
+
+{
+question:"15. Qual habilidade é importante na robótica?",
+options:[
+"Trabalho em equipe",
+"Desorganização",
+"Ignorar problemas",
+"Não testar o robô"
+],
+answer:0,
+explanation:"Na robótica, colaboração, testes e resolução de problemas são muito importantes."
+}
+
+];
+
+let currentQuestion = 0;
+let score = 0;
+let studentName = "";
+let studentAnswers = [];
+
+const startScreen = document.getElementById("startScreen");
+const quiz = document.getElementById("quiz");
+const scoreElement = document.getElementById("score");
+
+function startQuiz(){
+const nameInput = document.getElementById("studentName");
+studentName = nameInput.value.trim();
+
+if(studentName === ""){
+alert("Digite seu nome antes de começar o quiz.");
+nameInput.focus();
+return;
+}
+
+startScreen.style.display = "none";
+loadQuestion();
+}
+
+function loadQuestion(){
+
+const q = questions[currentQuestion];
+
+quiz.innerHTML = `
+<div class="student-info">
+<strong>Aluno:</strong> ${studentName}<br>
+<strong>Questão:</strong> ${currentQuestion + 1} de ${questions.length}
+</div>
+
+<div class="question">${q.question}</div>
+
+${q.options.map((option,index)=>
+`<button class="option" onclick="selectAnswer(${index})">${option}</button>`
+).join("")}
+
+<div class="feedback" id="feedback"></div>
+
+<button class="btn next-btn" id="nextBtn" onclick="nextQuestion()">
+Próxima questão
+</button>
+`;
+
+}
+
+function selectAnswer(index){
+
+const q = questions[currentQuestion];
+
+const buttons = document.querySelectorAll(".option");
+
+const feedback = document.getElementById("feedback");
+
+const nextBtn = document.getElementById("nextBtn");
+
+buttons.forEach(btn => btn.disabled = true);
+
+const isCorrect = index === q.answer;
+
+studentAnswers[currentQuestion] = {
+questionNumber: currentQuestion + 1,
+question: q.question,
+selectedIndex: index,
+selectedAnswer: q.options[index],
+correctIndex: q.answer,
+correctAnswer: q.options[q.answer],
+isCorrect: isCorrect
+};
+
+if(isCorrect){
+
+buttons[index].classList.add("correct");
+
+feedback.innerHTML =
+`<strong>✅ Resposta correta!</strong><br><br>${q.explanation}`;
+
+score++;
+
+}else{
+
+buttons[index].classList.add("wrong");
+
+buttons[q.answer].classList.add("correct");
+
+feedback.innerHTML =
+`<strong>❌ Resposta errada.</strong><br><br>${q.explanation}`;
+
+}
+
+feedback.style.display = "block";
+
+nextBtn.style.display = "inline-block";
+
+}
+
+function nextQuestion(){
+
+currentQuestion++;
+
+if(currentQuestion < questions.length){
+
+loadQuestion();
+
+}else{
+
+showResults();
+
+}
+
+}
+
+function showResults(){
+
+quiz.innerHTML = "";
+
+const percentage = Math.round((score / questions.length) * 100);
+
+scoreElement.innerHTML = `
+🎉 ${studentName}, você acertou ${score} de ${questions.length} questões!<br>
+Percentual: ${percentage}%
+`;
+
+const resultRows = studentAnswers.map(item => `
+<tr>
+<td>${item.questionNumber}</td>
+<td>${item.selectedAnswer}</td>
+<td>${item.correctAnswer}</td>
+<td>${item.isCorrect ? "Correta" : "Errada"}</td>
+</tr>
+`).join("");
+
+quiz.innerHTML = `
+<div class="student-info">
+<strong>Aluno:</strong> ${studentName}<br>
+<strong>Acertos:</strong> ${score} de ${questions.length}<br>
+<strong>Percentual:</strong> ${percentage}%
+</div>
+
+<table class="results-table">
+<thead>
+<tr>
+<th>Questão</th>
+<th>Resposta do aluno</th>
+<th>Gabarito correto</th>
+<th>Resultado</th>
+</tr>
+</thead>
+<tbody>
+${resultRows}
+</tbody>
+</table>
+
+<button class="btn" onclick="sendResultsToProfessor()">Enviar resultado para o professor</button>
+<button class="btn secondary-btn" onclick="copyResults()">Copiar gabarito</button>
+
+<div class="notice" id="sendNotice">
+<strong>Importante:</strong> o envio direto para o professor só funciona depois que a URL do Google Apps Script for configurada no código. O aluno não precisa ter e-mail.
+</div>
+`;
+
+}
+
+function generateResultsText(){
+
+const percentage = Math.round((score / questions.length) * 100);
+
+let text = "";
+
+text += "Quiz OBR 2026 - 3º ano. ESC Robótica\n";
+text += "Aluno: " + studentName + "\n";
+text += "Acertos: " + score + " de " + questions.length + "\n";
+text += "Percentual: " + percentage + "%\n\n";
+text += "GABARITO DAS RESPOSTAS\n\n";
+
+studentAnswers.forEach(item => {
+text += "Questão " + item.questionNumber + "\n";
+text += "Pergunta: " + item.question + "\n";
+text += "Resposta do aluno: " + item.selectedAnswer + "\n";
+text += "Resposta correta: " + item.correctAnswer + "\n";
+text += "Resultado: " + (item.isCorrect ? "Correta" : "Errada") + "\n";
+text += "----------------------------------------\n";
+});
+
+return text;
+
+}
+
+function buildPayload(){
+
+const percentage = Math.round((score / questions.length) * 100);
+
+return {
+quiz: "Quiz OBR 2026 - 3º ano. ESC Robótica",
+aluno: studentName,
+acertos: score,
+totalQuestoes: questions.length,
+percentual: percentage,
+dataHora: new Date().toLocaleString("pt-BR"),
+respostas: studentAnswers.map(item => ({
+questao: item.questionNumber,
+pergunta: item.question,
+respostaAluno: item.selectedAnswer,
+respostaCorreta: item.correctAnswer,
+resultado: item.isCorrect ? "Correta" : "Errada"
+}))
+};
+
+}
+
+function sendResultsToProfessor(){
+
+if(!GOOGLE_APPS_SCRIPT_URL || GOOGLE_APPS_SCRIPT_URL === "COLE_AQUI_A_URL_DO_APPS_SCRIPT"){
+alert("O envio ainda não foi configurado. O professor precisa colar a URL do Google Apps Script no código do quiz.");
+return;
+}
+
+const payload = buildPayload();
+const form = document.createElement("form");
+form.method = "POST";
+form.action = GOOGLE_APPS_SCRIPT_URL;
+form.target = "hidden_iframe";
+form.style.display = "none";
+
+const input = document.createElement("input");
+input.type = "hidden";
+input.name = "payload";
+input.value = JSON.stringify(payload);
+form.appendChild(input);
+
+document.body.appendChild(form);
+form.submit();
+
+document.getElementById("sendNotice").innerHTML =
+"<strong>Resultado enviado.</strong> Se a planilha do professor estiver configurada corretamente, o registro aparecerá lá.";
+
+}
+
+function copyResults(){
+
+const text = generateResultsText();
+
+navigator.clipboard.writeText(text).then(function(){
+alert("Gabarito copiado. Agora você pode colar no WhatsApp, e-mail ou outro local.");
+}).catch(function(){
+alert("Não foi possível copiar automaticamente. Selecione o texto do resultado e copie manualmente.");
+});
+
+}
+
+</script>
+
+</body>
+</html>
