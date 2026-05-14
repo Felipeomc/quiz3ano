@@ -3,649 +3,3147 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz OBR 2026 - 3º ano. ESC Robótica</title>
+<title>Quiz OBR 2026 - ESC Robótica</title>
 
 <style>
-body{
-font-family:Arial,sans-serif;
-background:#f4f6f9;
-padding:20px;
+:root {
+  --obr-red:#EB6047;
+  --obr-orange:#f58220;
+  --obr-yellow:#E8C347;
+  --obr-green:#84C54F;
+  --obr-blue:#5F95CF;
+  --obr-dark:#232323;
+  --obr-bg:#f7fafc;
+  --card:#ffffff;
+  --text:#1f2937;
+  --muted:#64748b;
 }
 
-.quiz-container{
-background:white;
-max-width:850px;
-margin:auto;
-padding:24px;
-border-radius:16px;
-box-shadow:0 4px 12px rgba(0,0,0,0.1);
+* {
+  box-sizing:border-box;
 }
 
-h1{
-text-align:center;
-color:#1f3c88;
+body {
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at 10% 10%, rgba(245,130,32,.14), transparent 28%),
+    radial-gradient(circle at 90% 12%, rgba(92,148,210,.18), transparent 30%),
+    radial-gradient(circle at 50% 95%, rgba(114,183,53,.18), transparent 30%),
+    var(--obr-bg);
+  color:var(--text);
 }
 
-label{
-font-weight:bold;
-display:block;
-margin-bottom:8px;
+.color-strip {
+  display:grid;
+  grid-template-columns:repeat(5, 1fr);
+  height:7px;
 }
 
-input{
-width:100%;
-box-sizing:border-box;
-padding:14px;
-font-size:16px;
-border:1px solid #cbd5e1;
-border-radius:10px;
-margin-bottom:14px;
+.color-strip span:nth-child(1) { background:var(--obr-red); }
+.color-strip span:nth-child(2) { background:var(--obr-orange); }
+.color-strip span:nth-child(3) { background:var(--obr-yellow); }
+.color-strip span:nth-child(4) { background:var(--obr-green); }
+.color-strip span:nth-child(5) { background:var(--obr-blue); }
+
+.page {
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
 }
 
-.question{
-font-size:22px;
-margin-bottom:20px;
-font-weight:bold;
+.hero {
+  position:relative;
+  overflow:hidden;
+  padding:8px 16px 8px;
+  text-align:center;
 }
 
-.option{
-display:block;
-width:100%;
-margin:10px 0;
-padding:14px;
-border:none;
-border-radius:10px;
-background:#e8edff;
-cursor:pointer;
-font-size:16px;
-text-align:left;
+.hero-card {
+  max-width:860px;
+  margin:0 auto;
+  background:rgba(255,255,255,.94);
+  border:1px solid rgba(226,232,240,.9);
+  border-radius:22px;
+  padding:12px 16px;
+  box-shadow:0 10px 26px rgba(15,23,42,.10);
+  position:relative;
+  z-index:2;
 }
 
-.option:hover{
-background:#d7e0ff;
+.hero-topline {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:14px;
 }
 
-.option:disabled{
-cursor:not-allowed;
+.obr-logo {
+  width:62px;
+  height:62px;
+  object-fit:contain;
+  background:white;
+  border-radius:16px;
+  padding:6px;
+  box-shadow:0 8px 18px rgba(15,23,42,.12);
 }
 
-.correct{
-background:#b8f5c0 !important;
+.kicker {
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  background:#fff7ed;
+  color:#9a3412;
+  border:1px solid #fed7aa;
+  border-radius:999px;
+  padding:6px 11px;
+  font-weight:700;
+  font-size:13px;
+  margin-bottom:6px;
 }
 
-.wrong{
-background:#ffbebe !important;
+h1 {
+  margin:4px 0 6px;
+  font-size:clamp(25px, 4vw, 38px);
+  line-height:1.04;
+  color:var(--obr-dark);
+  letter-spacing:-1px;
 }
 
-.feedback{
-margin-top:18px;
-padding:14px;
-border-radius:10px;
-display:none;
-background:#f1f5f9;
-line-height:1.5;
+.hero p {
+  max-width:720px;
+  margin:0 auto;
+  color:#475569;
+  font-size:clamp(13px, 1.8vw, 16px);
+  line-height:1.42;
 }
 
-.btn{
-margin-top:20px;
-padding:12px 18px;
-border:none;
-border-radius:10px;
-background:#1f3c88;
-color:white;
-cursor:pointer;
-font-size:16px;
+.hero-actions {
+  margin-top:12px;
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  flex-wrap:wrap;
 }
 
-.btn:hover{
-background:#162b63;
+.official-link {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  text-decoration:none;
+  background:var(--obr-orange);
+  color:white;
+  border-radius:999px;
+  padding:12px 18px;
+  font-weight:800;
+  box-shadow:0 10px 20px rgba(245,130,32,.25);
 }
 
-.next-btn{
-display:none;
+.official-link.secondary {
+  background:#ffffff;
+  color:var(--obr-dark);
+  border:1px solid #dbe3ef;
+  box-shadow:none;
 }
 
-.secondary-btn{
-background:#475569;
-margin-left:8px;
+.gear {
+  position:absolute;
+  width:96px;
+  height:96px;
+  opacity:.20;
+  z-index:1;
+  animation:spin 10s linear infinite;
+  user-select:none;
+  pointer-events:none;
+  border-radius:50%;
+  clip-path:polygon(50% 0%, 60% 14%, 74% 8%, 80% 22%, 94% 24%, 91% 40%, 100% 50%, 91% 60%, 94% 76%, 80% 78%, 74% 92%, 60% 86%, 50% 100%, 40% 86%, 26% 92%, 20% 78%, 6% 76%, 9% 60%, 0% 50%, 9% 40%, 6% 24%, 20% 22%, 26% 8%, 40% 14%);
 }
 
-.score{
-text-align:center;
-font-size:24px;
-font-weight:bold;
-margin-top:20px;
+.gear::after {
+  content:"";
+  position:absolute;
+  inset:31%;
+  background:var(--obr-bg);
+  border-radius:50%;
 }
 
-.student-info{
-background:#f8fafc;
-border:1px solid #e2e8f0;
-border-radius:12px;
-padding:16px;
-margin-top:18px;
+.gear.red { background:var(--obr-red); top:-18px; left:-24px; }
+.gear.blue { background:var(--obr-blue); top:20px; right:-24px; animation-duration:13s; animation-direction:reverse; }
+.gear.green { background:var(--obr-green); bottom:-46px; left:14%; width:132px; height:132px; animation-duration:18s; }
+.gear.orange { background:var(--obr-orange); bottom:-28px; right:17%; width:88px; height:88px; animation-duration:8s; animation-direction:reverse; }
+
+@keyframes spin {
+  from { transform:rotate(0deg); }
+  to { transform:rotate(360deg); }
 }
 
-.results-table{
-width:100%;
-border-collapse:collapse;
-margin-top:18px;
-font-size:14px;
+.main {
+  width:min(1080px, calc(100% - 28px));
+  margin:6px auto 24px;
+  flex:1;
+}
+
+.panel {
+  background:var(--card);
+  border:1px solid #e2e8f0;
+  border-radius:24px;
+  box-shadow:0 12px 32px rgba(15,23,42,.10);
+  padding:24px;
+}
+
+.section-title {
+  margin:0 0 6px;
+  font-size:clamp(24px, 4vw, 34px);
+  color:#111827;
+}
+
+.section-subtitle {
+  margin:0 0 22px;
+  color:#64748b;
+  line-height:1.5;
+}
+
+.grid {
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:16px;
+}
+
+.card-btn {
+  border:none;
+  background:white;
+  border-radius:22px;
+  padding:22px;
+  text-align:left;
+  cursor:pointer;
+  min-height:170px;
+  border:2px solid #e5e7eb;
+  transition:.18s ease;
+  position:relative;
+  overflow:hidden;
+}
+
+.card-btn:hover {
+  transform:translateY(-4px);
+  box-shadow:0 14px 30px rgba(15,23,42,.12);
+  border-color:var(--obr-blue);
+}
+
+.card-btn.disabled {
+  cursor:not-allowed;
+  opacity:.68;
+  filter:grayscale(.12);
+}
+
+.card-btn.disabled:hover {
+  transform:none;
+  box-shadow:none;
+  border-color:#e5e7eb;
+}
+
+.card-btn .badge {
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  color:white;
+  font-weight:800;
+  font-size:13px;
+  margin-bottom:12px;
+}
+
+.badge.blue { background:var(--obr-blue); }
+.badge.green { background:var(--obr-green); }
+.badge.orange { background:var(--obr-orange); }
+.badge.red { background:var(--obr-red); }
+.badge.yellow { background:var(--obr-yellow); color:#2f2600; }
+
+.card-btn h3 {
+  margin:0 0 8px;
+  font-size:24px;
+  color:#111827;
+}
+
+.card-btn p {
+  margin:0;
+  color:#64748b;
+  line-height:1.45;
+}
+
+.card-btn .big-icon {
+  position:absolute;
+  right:16px;
+  bottom:10px;
+  font-size:54px;
+  opacity:.14;
+}
+
+.student-info {
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:18px;
+  line-height:1.55;
+}
+
+label {
+  font-weight:800;
+  display:block;
+  margin-bottom:8px;
+}
+
+input {
+  width:100%;
+  padding:15px;
+  font-size:17px;
+  border:1px solid #cbd5e1;
+  border-radius:14px;
+  margin-bottom:12px;
+  outline:none;
+}
+
+input:focus {
+  border-color:var(--obr-blue);
+  box-shadow:0 0 0 4px rgba(92,148,210,.16);
+}
+
+.btn {
+  border:none;
+  border-radius:14px;
+  padding:13px 18px;
+  background:#1f3c88;
+  color:white;
+  cursor:pointer;
+  font-size:16px;
+  font-weight:800;
+  transition:.16s ease;
+}
+
+.btn:hover {
+  transform:translateY(-1px);
+  filter:brightness(.96);
+}
+
+.btn.orange { background:var(--obr-orange); }
+.btn.green { background:var(--obr-green); }
+.btn.gray { background:#475569; }
+.btn.red { background:var(--obr-red); }
+.btn.outline {
+  background:white;
+  color:#1f2937;
+  border:1px solid #cbd5e1;
+}
+
+.btn-row {
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:14px;
+}
+
+.progress-wrap {
+  margin:14px 0 20px;
+}
+
+.progress-bar {
+  height:12px;
+  background:#e2e8f0;
+  border-radius:999px;
+  overflow:hidden;
+}
+
+.progress-fill {
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg, var(--obr-red), var(--obr-orange), var(--obr-yellow), var(--obr-green), var(--obr-blue));
+  transition:width .25s ease;
+}
+
+.question {
+  font-size:clamp(20px, 3.2vw, 28px);
+  margin:18px 0;
+  font-weight:900;
+  line-height:1.25;
+}
+
+.option {
+  display:block;
+  width:100%;
+  margin:10px 0;
+  padding:16px;
+  border:none;
+  border-radius:16px;
+  background:#eef4ff;
+  cursor:pointer;
+  font-size:17px;
+  text-align:left;
+  border:2px solid transparent;
+  color:#111827;
+}
+
+.option:hover {
+  background:#dfeaff;
+  border-color:#b8ccff;
+}
+
+.option:disabled {
+  cursor:not-allowed;
+}
+
+.correct {
+  background:#bbf7d0 !important;
+  border-color:#22c55e !important;
+}
+
+.wrong {
+  background:#fecaca !important;
+  border-color:#ef4444 !important;
+}
+
+.feedback {
+  margin-top:18px;
+  padding:16px;
+  border-radius:16px;
+  display:none;
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  line-height:1.55;
+}
+
+.score {
+  text-align:center;
+  font-size:clamp(24px, 4vw, 36px);
+  font-weight:900;
+  margin-top:20px;
+  color:#111827;
+}
+
+.results-table-wrap {
+  overflow-x:auto;
+  margin-top:18px;
+}
+
+.results-table {
+  width:100%;
+  border-collapse:collapse;
+  font-size:14px;
+  background:white;
 }
 
 .results-table th,
-.results-table td{
-border:1px solid #cbd5e1;
-padding:8px;
-text-align:left;
-vertical-align:top;
+.results-table td {
+  border:1px solid #cbd5e1;
+  padding:9px;
+  text-align:left;
+  vertical-align:top;
 }
 
-.results-table th{
-background:#e8edff;
+.results-table th {
+  background:#e8edff;
 }
 
-.notice{
-margin-top:16px;
-background:#fff7ed;
-border:1px solid #fed7aa;
-border-radius:10px;
-padding:12px;
-line-height:1.4;
-font-size:15px;
+.notice {
+  margin-top:16px;
+  background:#fff7ed;
+  border:1px solid #fed7aa;
+  border-radius:14px;
+  padding:13px;
+  line-height:1.45;
 }
 
-.small{
-font-size:14px;
-color:#475569;
-line-height:1.4;
+.small {
+  font-size:14px;
+  color:#64748b;
+  line-height:1.45;
 }
 
-@media (max-width:600px){
-.quiz-container{
-padding:16px;
+.performance-chart {
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:220px 1fr;
+  gap:22px;
+  align-items:center;
+  background:#f8fafc;
+  border:1px solid #e2e8f0;
+  border-radius:20px;
+  padding:18px;
 }
 
-.question{
-font-size:19px;
+.donut {
+  width:180px;
+  height:180px;
+  border-radius:50%;
+  background:conic-gradient(var(--obr-green) var(--percent), #e2e8f0 0);
+  display:grid;
+  place-items:center;
+  position:relative;
+  margin:auto;
+  box-shadow:inset 0 0 0 1px rgba(15,23,42,.06);
 }
 
-.secondary-btn{
-margin-left:0;
-display:block;
-width:100%;
+.donut::after {
+  content:"";
+  position:absolute;
+  width:124px;
+  height:124px;
+  background:white;
+  border-radius:50%;
+  box-shadow:0 2px 8px rgba(15,23,42,.08);
 }
 
-.btn{
-width:100%;
+.donut span {
+  position:relative;
+  z-index:1;
+  font-size:34px;
+  font-weight:900;
+  color:#111827;
 }
+
+.performance-bars {
+  display:grid;
+  gap:14px;
+}
+
+.bar-label {
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  font-weight:800;
+  margin-bottom:6px;
+}
+
+.metric-bar {
+  height:18px;
+  background:#e2e8f0;
+  border-radius:999px;
+  overflow:hidden;
+}
+
+.metric-fill {
+  height:100%;
+  border-radius:999px;
+  width:0%;
+}
+
+.metric-fill.correct-fill {
+  background:linear-gradient(90deg, var(--obr-green), var(--obr-blue));
+}
+
+.metric-fill.wrong-fill {
+  background:linear-gradient(90deg, var(--obr-red), var(--obr-orange));
+}
+
+.performance-message {
+  margin:0;
+  color:#475569;
+  line-height:1.45;
+}
+
+.area-pill {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  border-radius:999px;
+  background:#fff7ed;
+  border:1px solid #fed7aa;
+  color:#9a3412;
+  padding:6px 10px;
+  font-weight:900;
+  margin:8px 0 4px;
+}
+
+.points-note {
+  margin-top:10px;
+  font-size:15px;
+  color:#475569;
+  line-height:1.45;
+}
+
+.grade-highlight {
+  font-size:22px;
+  font-weight:900;
+  color:#111827;
+}
+
+
+
+.footer {
+  margin-top:28px;
+  background:#171717;
+  color:white;
+  padding:0;
+  position:relative;
+  overflow:hidden;
+}
+
+.footer::before {
+  content:"";
+  display:block;
+  height:8px;
+  background:linear-gradient(90deg, var(--obr-red), var(--obr-orange), var(--obr-yellow), var(--obr-green), var(--obr-blue));
+}
+
+.footer-inner {
+  width:min(1080px, calc(100% - 28px));
+  margin:0 auto;
+  padding:30px 0 24px;
+  display:grid;
+  grid-template-columns:1.05fr .95fr;
+  gap:26px;
+  align-items:center;
+  position:relative;
+  z-index:2;
+}
+
+.footer-brand {
+  display:flex;
+  align-items:center;
+  gap:16px;
+  margin-bottom:14px;
+}
+
+.footer-logo {
+  width:72px;
+  height:72px;
+  object-fit:contain;
+  background:white;
+  border-radius:18px;
+  padding:8px;
+  box-shadow:0 10px 22px rgba(0,0,0,.24);
+}
+
+.footer-badge {
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  background:rgba(245,130,32,.15);
+  border:1px solid rgba(245,130,32,.55);
+  color:#fed7aa;
+  border-radius:999px;
+  padding:6px 10px;
+  font-weight:900;
+  font-size:13px;
+  margin-bottom:8px;
+}
+
+.footer h2 {
+  margin:0;
+  font-size:clamp(24px, 3vw, 34px);
+  letter-spacing:-.5px;
+}
+
+.footer p {
+  margin:0;
+  color:#e5e7eb;
+  line-height:1.6;
+  font-size:16px;
+}
+
+.footer-actions {
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  margin-top:18px;
+}
+
+.footer-link {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  text-decoration:none;
+  background:white;
+  color:#1f2937;
+  border-radius:999px;
+  padding:12px 18px;
+  font-weight:900;
+  border:1px solid rgba(255,255,255,.28);
+}
+
+.footer-cards {
+  display:grid;
+  grid-template-columns:repeat(3, 1fr);
+  gap:12px;
+}
+
+.footer-info-card {
+  min-height:150px;
+  background:rgba(255,255,255,.09);
+  border:1px solid rgba(255,255,255,.14);
+  border-radius:20px;
+  padding:16px;
+  backdrop-filter:blur(6px);
+}
+
+.footer-info-card .icon {
+  display:block;
+  font-size:30px;
+  margin-bottom:10px;
+}
+
+.footer-info-card strong {
+  display:block;
+  font-size:16px;
+  margin-bottom:8px;
+}
+
+.footer-info-card span {
+  display:block;
+  color:#d1d5db;
+  line-height:1.45;
+  font-size:14px;
+}
+
+.footer-bottom {
+  background:linear-gradient(90deg, #d94f3d, var(--obr-orange));
+  position:relative;
+  z-index:2;
+}
+
+.footer-bottom-inner {
+  width:min(1080px, calc(100% - 28px));
+  margin:0 auto;
+  padding:14px 0;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  color:white;
+  font-weight:800;
+  flex-wrap:wrap;
+}
+
+.footer-bottom-inner span:last-child {
+  opacity:.9;
+  font-size:14px;
+}
+
+.footer-gear {
+  position:absolute;
+  width:170px;
+  height:170px;
+  opacity:.12;
+  z-index:1;
+  animation:spin 22s linear infinite;
+  pointer-events:none;
+  clip-path:polygon(50% 0%, 60% 14%, 74% 8%, 80% 22%, 94% 24%, 91% 40%, 100% 50%, 91% 60%, 94% 76%, 80% 78%, 74% 92%, 60% 86%, 50% 100%, 40% 86%, 26% 92%, 20% 78%, 6% 76%, 9% 60%, 0% 50%, 9% 40%, 6% 24%, 20% 22%, 26% 8%, 40% 14%);
+}
+
+.footer-gear::after {
+  content:"";
+  position:absolute;
+  inset:31%;
+  background:#171717;
+  border-radius:50%;
+}
+
+.footer-gear.orange {
+  background:var(--obr-orange);
+  top:18px;
+  right:7%;
+}
+
+.footer-gear.blue {
+  background:var(--obr-blue);
+  bottom:16px;
+  left:5%;
+  width:110px;
+  height:110px;
+  animation-direction:reverse;
+}
+
+.hidden {
+  display:none !important;
+}
+
+@media (max-width:760px) {
+  .hero {
+    padding-top:10px;
+  }
+
+  .hero-card {
+    padding:12px 12px;
+  }
+
+  .hero-topline {
+    gap:10px;
+  }
+
+  .obr-logo {
+    width:50px;
+    height:50px;
+  }
+
+  .grid {
+    grid-template-columns:1fr;
+  }
+
+  .panel {
+    padding:18px;
+  }
+
+  .btn, .official-link {
+    width:100%;
+  }
+
+  .btn-row {
+    flex-direction:column;
+  }
+
+  .footer-inner {
+    grid-template-columns:1fr;
+    padding:24px 0 20px;
+  }
+
+  .footer-brand {
+    align-items:flex-start;
+  }
+
+  .footer-logo {
+    width:58px;
+    height:58px;
+  }
+
+  .footer-cards {
+    grid-template-columns:1fr;
+  }
+
+  .footer-actions .official-link,
+  .footer-actions .footer-link {
+    width:100%;
+  }
+
+  .footer-bottom-inner {
+    align-items:flex-start;
+    flex-direction:column;
+  }
+
+  .gear {
+    font-size:62px;
+  }
+
+  .gear.green {
+    font-size:84px;
+  }
+
+  .performance-chart {
+    grid-template-columns:1fr;
+  }
+
+  .donut {
+    width:150px;
+    height:150px;
+  }
+
+  .donut::after {
+    width:104px;
+    height:104px;
+  }
 }
 </style>
 </head>
 
 <body>
+<div class="page">
+  <div class="color-strip" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
 
-<div class="quiz-container">
-<h1>Quiz OBR 2026 - 3º ano. ESC Robótica 🚀</h1>
+  <header class="hero" id="heroSection">
+    <span class="gear red"></span>
+    <span class="gear blue"></span>
+    <span class="gear green"></span>
+    <span class="gear orange"></span>
 
-<div id="startScreen">
-<div class="student-info">
-<label for="studentName">Digite seu nome:</label>
-<input type="text" id="studentName" placeholder="Exemplo: Maria Silva">
-<button class="btn" onclick="startQuiz()">Começar quiz</button>
-<p class="small">Ao final, aparecerá um botão para enviar o resultado para a planilha do professor. O aluno não precisa ter e-mail.</p>
-</div>
-</div>
+    <div class="hero-card">
+      <div class="hero-topline">
+        <div>
+          <div class="kicker">🏅 ESC Robótica • Preparação OBR 2026</div>
+          <h1>Quiz OBR 2026</h1>
+        </div>
+      </div>
+      <p>Escolha seu ano escolar, selecione o nível e treine com robótica, lógica, português, matemática, ciências, geografia e resolução de problemas.</p>
+    </div>
+  </header>
 
-<div id="quiz"></div>
+  <main class="main">
+    <div id="app" class="panel"></div>
+    <div class="score" id="score"></div>
+  </main>
 
-<div class="score" id="score"></div>
+  <footer class="footer" id="footerSection">
+    <span class="footer-gear orange" aria-hidden="true"></span>
+    <span class="footer-gear blue" aria-hidden="true"></span>
+
+    <div class="footer-inner">
+      <section>
+        <div class="footer-brand">
+          <img class="footer-logo" src="https://obr.robocup.org.br/wp-content/uploads/2026/03/1-OBR-%402x-150x150.png" alt="Logomarca da Olimpíada Brasileira de Robótica">
+          <div>
+            <span class="footer-badge">🚀 Treino escolar • OBR 2026</span>
+            <h2>Prepare-se para a Olimpíada Brasileira de Robótica</h2>
+          </div>
+        </div>
+        <p>Este quiz ajuda o aluno a praticar raciocínio, interpretação, matemática, ciências, geografia e conceitos básicos de robótica. A ideia é aprender com cada tentativa e chegar mais confiante para a modalidade teórica.</p>
+        <div class="footer-actions">
+          <a class="official-link" href="https://obr.robocup.org.br/" target="_blank" rel="noopener">Acessar site oficial</a>
+          <a class="footer-link" href="https://obr.robocup.org.br/modalidade-teorica/" target="_blank" rel="noopener">Ver modalidade teórica</a>
+        </div>
+      </section>
+
+      <section class="footer-cards" aria-label="Informações do treino">
+        <div class="footer-info-card">
+          <span class="icon">🎯</span>
+          <strong>Treino por nível</strong>
+          <span>Fácil, médio e difícil para avançar aos poucos.</span>
+        </div>
+        <div class="footer-info-card">
+          <span class="icon">📊</span>
+          <strong>Resultado registrado</strong>
+          <span>O professor acompanha nota, acertos e desempenho.</span>
+        </div>
+        <div class="footer-info-card">
+          <span class="icon">🤖</span>
+          <strong>Robótica na escola</strong>
+          <span>Questões para estimular lógica, curiosidade e estudo.</span>
+        </div>
+      </section>
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom-inner">
+        <span>Olimpíada Brasileira de Robótica 2026</span>
+        <span>ESC Robótica • Preparação para estudantes</span>
+      </div>
+    </div>
+  </footer>
 </div>
 
 <iframe name="hidden_iframe" style="display:none;"></iframe>
 
 <script>
-
-// URL do Google Apps Script do professor.
-// Depois de criar o Apps Script e publicar como Web App, cole a URL entre as aspas abaixo.
 const GOOGLE_APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxkXYZ_9Lelglq-MFJrkplMW-5HbCr1yOqxUXC091aJKnWoIKQx-zdIdHs0ugrD9KGznw/exec";
 
-const questions = [
-
-{
-question:"1. Qual é a principal função de um sensor em um robô?",
-options:[
-"Decorar o robô",
-"Fazer o robô perceber o ambiente",
-"Aumentar o peso do robô",
-"Trocar as rodas"
-],
-answer:1,
-explanation:"Sensores ajudam o robô a identificar obstáculos, luz, distância e outras informações do ambiente."
+const QUIZ_DATA = {
+  "3": {
+    "facil": [
+      {
+        "area": "Robótica",
+        "question": "1. Qual é a principal função de um sensor em um robô?",
+        "options": [
+          "Decorar o robô",
+          "Fazer o robô perceber o ambiente",
+          "Aumentar o peso do robô",
+          "Trocar as rodas"
+        ],
+        "answer": 1,
+        "explanation": "Sensores ajudam o robô a perceber luz, distância, obstáculos e outras informações do ambiente."
+      },
+      {
+        "area": "Robótica",
+        "question": "2. Qual componente funciona como o cérebro do robô?",
+        "options": [
+          "Motor",
+          "Roda",
+          "Controlador",
+          "Parafuso"
+        ],
+        "answer": 2,
+        "explanation": "O controlador recebe informações, processa comandos e ajuda o robô a decidir o que fazer."
+      },
+      {
+        "area": "Robótica",
+        "question": "3. Para que servem os motores em um robô?",
+        "options": [
+          "Produzir luz",
+          "Movimentar o robô",
+          "Fazer barulho",
+          "Guardar energia"
+        ],
+        "answer": 1,
+        "explanation": "Os motores transformam energia em movimento, fazendo rodas ou partes do robô se moverem."
+      },
+      {
+        "area": "Robótica",
+        "question": "4. O que significa programar um robô?",
+        "options": [
+          "Pintar o robô",
+          "Criar instruções para ele executar",
+          "Trocar peças",
+          "Lavar o robô"
+        ],
+        "answer": 1,
+        "explanation": "Programar é criar uma sequência de comandos que orienta o comportamento do robô."
+      },
+      {
+        "area": "Robótica",
+        "question": "5. O que um robô pode fazer ao detectar um obstáculo?",
+        "options": [
+          "Ignorar sempre",
+          "Desviar ou parar",
+          "Voar",
+          "Virar água"
+        ],
+        "answer": 1,
+        "explanation": "Com sensores e programação, o robô pode parar, desviar ou escolher outro caminho."
+      },
+      {
+        "area": "Robótica",
+        "question": "6. Qual sensor pode ajudar um robô a seguir uma linha preta no chão?",
+        "options": [
+          "Sensor de luz",
+          "Sensor de chuva",
+          "Sensor de fumaça",
+          "Sensor de vento"
+        ],
+        "answer": 0,
+        "explanation": "O sensor de luz percebe diferenças entre claro e escuro, o que ajuda a seguir linhas."
+      },
+      {
+        "area": "Robótica",
+        "question": "7. O que é um algoritmo?",
+        "options": [
+          "Uma sequência de passos",
+          "Uma bateria grande",
+          "Uma roda colorida",
+          "Um tipo de cola"
+        ],
+        "answer": 0,
+        "explanation": "Algoritmo é uma sequência organizada de passos para resolver um problema ou realizar uma tarefa."
+      },
+      {
+        "area": "Português",
+        "question": "8. Leia a frase: 'O robô parou porque encontrou uma parede.' Por que o robô parou?",
+        "options": [
+          "Porque encontrou uma parede",
+          "Porque ficou sem nome",
+          "Porque virou lápis",
+          "Porque queria dormir"
+        ],
+        "answer": 0,
+        "explanation": "A palavra 'porque' apresenta a causa: o robô parou ao encontrar uma parede."
+      },
+      {
+        "area": "Português",
+        "question": "9. Na frase 'O robô rápido desviou do obstáculo', qual palavra indica uma característica do robô?",
+        "options": [
+          "Robô",
+          "Rápido",
+          "Desviou",
+          "Obstáculo"
+        ],
+        "answer": 1,
+        "explanation": "'Rápido' indica uma característica do robô."
+      },
+      {
+        "area": "Matemática",
+        "question": "10. Um robô andou 2 passos e depois mais 3 passos. Quantos passos ele andou ao todo?",
+        "options": [
+          "3",
+          "4",
+          "5",
+          "6"
+        ],
+        "answer": 2,
+        "explanation": "Somando 2 + 3, o robô andou 5 passos."
+      },
+      {
+        "area": "Matemática",
+        "question": "11. Uma equipe montou 2 robôs. Cada robô tem 4 rodas. Quantas rodas há ao todo?",
+        "options": [
+          "4",
+          "6",
+          "8",
+          "10"
+        ],
+        "answer": 2,
+        "explanation": "São 2 robôs com 4 rodas cada: 2 × 4 = 8 rodas."
+      },
+      {
+        "area": "Ciências",
+        "question": "12. Qual destes elementos é uma fonte de luz que pode ser percebida por um sensor de luz?",
+        "options": [
+          "Lanterna acesa",
+          "Pedra sem luz",
+          "Caderno fechado",
+          "Sapato"
+        ],
+        "answer": 0,
+        "explanation": "Uma lanterna acesa emite luz e pode ser percebida por um sensor de luz."
+      },
+      {
+        "area": "Ciências",
+        "question": "13. Para funcionar, um robô precisa principalmente de:",
+        "options": [
+          "Energia",
+          "Areia",
+          "Papel",
+          "Água com açúcar"
+        ],
+        "answer": 0,
+        "explanation": "Motores, sensores e controlador precisam de energia para funcionar."
+      },
+      {
+        "area": "Geografia",
+        "question": "14. Para saber o caminho da sala até a quadra, qual material pode ajudar mais?",
+        "options": [
+          "Um mapa da escola",
+          "Uma borracha",
+          "Um copo",
+          "Uma bola"
+        ],
+        "answer": 0,
+        "explanation": "O mapa ajuda a localizar lugares e escolher caminhos."
+      },
+      {
+        "area": "Geografia",
+        "question": "15. Em um mapa, o que a legenda ajuda a entender?",
+        "options": [
+          "O significado dos símbolos",
+          "A cor da bateria",
+          "O nome do motor",
+          "O peso do robô"
+        ],
+        "answer": 0,
+        "explanation": "A legenda explica símbolos e marcas usados no mapa."
+      }
+    ],
+    "medio": [
+      {
+        "area": "Robótica",
+        "question": "1. Um robô precisa parar quando chega perto de uma parede. Qual combinação ajuda mais?",
+        "options": [
+          "Sensor de distância e programação",
+          "Tinta colorida e parafusos",
+          "Som alto e adesivos",
+          "Rodas maiores e enfeites"
+        ],
+        "answer": 0,
+        "explanation": "O sensor percebe a parede, e a programação manda o robô parar ou desviar."
+      },
+      {
+        "area": "Robótica",
+        "question": "2. Um robô segue uma linha preta no chão. Se a linha vira para a direita, o robô deve:",
+        "options": [
+          "Continuar reto sem mudar nada",
+          "Ajustar os motores para virar à direita",
+          "Desligar a bateria",
+          "Trocar o sensor por uma roda"
+        ],
+        "answer": 1,
+        "explanation": "Para seguir a linha, o robô precisa ajustar os motores conforme a leitura do sensor."
+      },
+      {
+        "area": "Robótica",
+        "question": "3. Em uma sequência de comandos, o robô deve andar, parar e virar. Isso é exemplo de:",
+        "options": [
+          "Algoritmo",
+          "Decoração",
+          "Peso",
+          "Barulho"
+        ],
+        "answer": 0,
+        "explanation": "Um algoritmo organiza comandos em uma sequência para realizar uma tarefa."
+      },
+      {
+        "area": "Robótica",
+        "question": "4. Se o sensor de luz lê uma parte clara do chão e depois uma parte escura, ele está percebendo:",
+        "options": [
+          "Diferença de cor ou luminosidade",
+          "O nome do aluno",
+          "A velocidade da internet",
+          "O tamanho da bateria"
+        ],
+        "answer": 0,
+        "explanation": "O sensor de luz identifica diferenças entre claro e escuro."
+      },
+      {
+        "area": "Robótica",
+        "question": "5. Qual situação mostra melhor o uso de condição em programação?",
+        "options": [
+          "Se encontrar obstáculo, então desviar",
+          "Pintar o robô antes da aula",
+          "Guardar o robô na caixa",
+          "Dar um nome ao robô"
+        ],
+        "answer": 0,
+        "explanation": "Uma condição usa a ideia de: se algo acontecer, então uma ação será executada."
+      },
+      {
+        "area": "Robótica",
+        "question": "6. Para testar se o robô está funcionando bem, o mais correto é:",
+        "options": [
+          "Testar, observar o erro e ajustar",
+          "Nunca testar para não gastar bateria",
+          "Trocar todas as peças sem motivo",
+          "Escolher o robô mais bonito"
+        ],
+        "answer": 0,
+        "explanation": "Na robótica, testar e melhorar faz parte do processo de aprendizagem."
+      },
+      {
+        "area": "Robótica",
+        "question": "7. Quando dois motores giram na mesma direção e com velocidade parecida, o robô tende a:",
+        "options": [
+          "Andar para frente",
+          "Medir temperatura",
+          "Ficar invisível",
+          "Virar uma bateria"
+        ],
+        "answer": 0,
+        "explanation": "Motores trabalhando juntos podem fazer o robô se deslocar para frente."
+      },
+      {
+        "area": "Português",
+        "question": "8. Leia: 'Primeiro, o robô ligou o sensor. Depois, desviou do obstáculo.' Qual palavra indica que uma ação aconteceu antes da outra?",
+        "options": [
+          "Primeiro",
+          "Robô",
+          "Obstáculo",
+          "Sensor"
+        ],
+        "answer": 0,
+        "explanation": "A palavra 'Primeiro' indica a ordem inicial da sequência."
+      },
+      {
+        "area": "Português",
+        "question": "9. Qual frase está mais clara para orientar um robô?",
+        "options": [
+          "Ande três passos e pare",
+          "Faça aquilo ali",
+          "Vai logo",
+          "Coisa de virar"
+        ],
+        "answer": 0,
+        "explanation": "Uma boa instrução deve ser clara, objetiva e indicar a ação esperada."
+      },
+      {
+        "area": "Matemática",
+        "question": "10. Três robôs recolheram 4 peças cada um. Quantas peças foram recolhidas ao todo?",
+        "options": [
+          "7",
+          "10",
+          "12",
+          "14"
+        ],
+        "answer": 2,
+        "explanation": "São 3 robôs com 4 peças cada: 3 × 4 = 12."
+      },
+      {
+        "area": "Matemática",
+        "question": "11. Observe a sequência: 2, 4, 6, __. Qual número completa a sequência?",
+        "options": [
+          "7",
+          "8",
+          "9",
+          "10"
+        ],
+        "answer": 1,
+        "explanation": "A sequência aumenta de 2 em 2. Depois do 6 vem o 8."
+      },
+      {
+        "area": "Ciências",
+        "question": "12. Quando a luz bate em um objeto que bloqueia sua passagem, pode formar:",
+        "options": [
+          "Sombra",
+          "Som",
+          "Vento",
+          "Areia"
+        ],
+        "answer": 0,
+        "explanation": "A sombra aparece quando a luz é bloqueada por um objeto."
+      },
+      {
+        "area": "Ciências",
+        "question": "13. Um sensor de temperatura serve para perceber:",
+        "options": [
+          "Se algo está quente ou frio",
+          "A quantidade de letras de uma palavra",
+          "A direção de um mapa",
+          "O nome da equipe"
+        ],
+        "answer": 0,
+        "explanation": "Sensores de temperatura medem se o ambiente ou objeto está mais quente ou mais frio."
+      },
+      {
+        "area": "Geografia",
+        "question": "14. Em um mapa simples, se um robô se move para a parte de cima do desenho, normalmente dizemos que ele foi para:",
+        "options": [
+          "Norte",
+          "Sul",
+          "Dentro da bateria",
+          "Abaixo da mesa"
+        ],
+        "answer": 0,
+        "explanation": "Em muitos mapas, a parte superior indica o norte."
+      },
+      {
+        "area": "Geografia",
+        "question": "15. Um robô precisa ir da biblioteca até a quadra. O que ajuda a escolher o melhor caminho?",
+        "options": [
+          "Observar o mapa e os pontos de referência",
+          "Escolher a cor mais bonita",
+          "Ignorar os corredores",
+          "Desligar o sensor"
+        ],
+        "answer": 0,
+        "explanation": "Mapas e pontos de referência ajudam a planejar trajetos."
+      }
+    ],
+    "dificil": [
+      {
+        "area": "Robótica",
+        "question": "1. Um robô deve seguir uma linha preta. Se o sensor percebe branco, o robô vira um pouco para procurar a linha. Essa regra é melhor descrita como:",
+        "options": [
+          "Uma decisão baseada em condição",
+          "Uma troca de bateria",
+          "Uma decoração do robô",
+          "Uma medalha da competição"
+        ],
+        "answer": 0,
+        "explanation": "O robô toma uma decisão a partir do que o sensor percebe. Isso é uma condição."
+      },
+      {
+        "area": "Robótica",
+        "question": "2. O robô está repetindo estes passos: ler sensor, decidir, mover motores. Essa repetição é parecida com:",
+        "options": [
+          "Um ciclo de controle",
+          "Um desenho artístico",
+          "Uma peça quebrada",
+          "Uma regra de pintura"
+        ],
+        "answer": 0,
+        "explanation": "Muitos robôs trabalham em ciclos: percebem, decidem e agem várias vezes."
+      },
+      {
+        "area": "Robótica",
+        "question": "3. Se um sensor de distância indica que o obstáculo está muito perto, qual ação é mais segura?",
+        "options": [
+          "Reduzir a velocidade, parar ou desviar",
+          "Acelerar sem verificar",
+          "Ignorar o sensor",
+          "Desligar apenas uma roda sem motivo"
+        ],
+        "answer": 0,
+        "explanation": "Quando há obstáculo próximo, o programa deve evitar colisão."
+      },
+      {
+        "area": "Robótica",
+        "question": "4. Um aluno mudou o programa e o robô piorou. Qual é a melhor atitude científica?",
+        "options": [
+          "Comparar o antes e o depois para entender a mudança",
+          "Nunca mais testar o robô",
+          "Trocar de equipe sem analisar",
+          "Apagar tudo sem observar"
+        ],
+        "answer": 0,
+        "explanation": "Comparar resultados ajuda a descobrir se a alteração melhorou ou piorou o comportamento."
+      },
+      {
+        "area": "Robótica",
+        "question": "5. Em um algoritmo, a ordem dos comandos é importante porque:",
+        "options": [
+          "O robô executa as instruções na sequência programada",
+          "A ordem só serve para deixar bonito",
+          "O robô entende qualquer ordem sozinho",
+          "A bateria escolhe o comando correto"
+        ],
+        "answer": 0,
+        "explanation": "Mudar a ordem dos comandos pode mudar completamente o comportamento do robô."
+      },
+      {
+        "area": "Robótica",
+        "question": "6. Um robô andou demais antes de virar. Qual ajuste no programa pode ajudar?",
+        "options": [
+          "Diminuir o tempo ou a distância antes da virada",
+          "Aumentar apenas o tamanho do nome",
+          "Remover todos os sensores",
+          "Pintar a pista de outra cor sem testar"
+        ],
+        "answer": 0,
+        "explanation": "Se o robô passou do ponto, ajustar tempo, distância ou leitura dos sensores pode melhorar o resultado."
+      },
+      {
+        "area": "Robótica",
+        "question": "7. Quando um robô usa dados do sensor para corrigir seu movimento, ele está:",
+        "options": [
+          "Usando informação do ambiente para ajustar sua ação",
+          "Fazendo apenas decoração",
+          "Funcionando sem energia",
+          "Ignorando o controlador"
+        ],
+        "answer": 0,
+        "explanation": "O sensor fornece dados que ajudam o controlador a ajustar os motores."
+      },
+      {
+        "area": "Português",
+        "question": "8. Leia: 'O robô errou o caminho. A equipe observou o teste e corrigiu o programa.' Qual foi a atitude da equipe?",
+        "options": [
+          "Analisou o erro e melhorou o programa",
+          "Desistiu sem testar",
+          "Quebrou o sensor",
+          "Ignorou o problema"
+        ],
+        "answer": 0,
+        "explanation": "O texto mostra que a equipe observou o teste e fez uma correção."
+      },
+      {
+        "area": "Português",
+        "question": "9. Qual alternativa resume melhor a ideia: 'testar, errar, corrigir e testar novamente'?",
+        "options": [
+          "Melhorar uma solução por etapas",
+          "Fazer tudo sem pensar",
+          "Evitar estudar",
+          "Parar no primeiro erro"
+        ],
+        "answer": 0,
+        "explanation": "A frase descreve um processo de melhoria por etapas."
+      },
+      {
+        "area": "Matemática",
+        "question": "10. Um robô andou 12 centímetros para frente e voltou 3 centímetros. A que distância ele ficou do ponto inicial?",
+        "options": [
+          "3 cm",
+          "9 cm",
+          "12 cm",
+          "15 cm"
+        ],
+        "answer": 1,
+        "explanation": "Se ele andou 12 cm e voltou 3 cm, ficou a 9 cm do ponto inicial."
+      },
+      {
+        "area": "Matemática",
+        "question": "11. Um robô coleta 2 peças por minuto durante 5 minutos, mas perde 3 peças. Com quantas peças ele fica?",
+        "options": [
+          "5",
+          "7",
+          "10",
+          "13"
+        ],
+        "answer": 1,
+        "explanation": "Ele coleta 2 × 5 = 10 peças. Depois perde 3, ficando com 7."
+      },
+      {
+        "area": "Ciências",
+        "question": "12. Se a bateria do robô acaba, qual explicação é mais adequada?",
+        "options": [
+          "Faltou energia para alimentar os componentes",
+          "O robô ficou sem mapa",
+          "A roda virou sensor",
+          "A sala ficou maior"
+        ],
+        "answer": 0,
+        "explanation": "Sem energia, controlador, sensores e motores não funcionam corretamente."
+      },
+      {
+        "area": "Ciências",
+        "question": "13. Um robô com rodas tem mais dificuldade de andar em um chão muito áspero porque:",
+        "options": [
+          "O atrito pode dificultar o movimento",
+          "A luz desaparece",
+          "A matemática muda",
+          "O mapa fica sem legenda"
+        ],
+        "answer": 0,
+        "explanation": "O atrito entre as rodas e o chão influencia o movimento do robô."
+      },
+      {
+        "area": "Geografia",
+        "question": "14. Em uma malha de mapa, o robô está em B2. Ele anda uma casa para leste e chega em C2. Depois anda uma casa para norte. Onde ele chega?",
+        "options": [
+          "C3",
+          "B3",
+          "C1",
+          "A2"
+        ],
+        "answer": 0,
+        "explanation": "De B2 para leste vai a C2; depois, uma casa ao norte leva a C3."
+      },
+      {
+        "area": "Geografia",
+        "question": "15. O robô precisa chegar à praça, mas uma rua está bloqueada. Qual estratégia é melhor?",
+        "options": [
+          "Escolher uma rota alternativa pelo mapa",
+          "Parar para sempre",
+          "Apagar todos os caminhos",
+          "Ignorar o bloqueio"
+        ],
+        "answer": 0,
+        "explanation": "Quando há um bloqueio, mapas e rotas alternativas ajudam a planejar outro caminho."
+      }
+    ]
+  },
+  "4": {
+    "facil": [
+        {
+            "area": "Robótica",
+            "question": "1. Um robô entregador precisa levar uma caixa até uma sala. Qual peça ajuda o robô a perceber se há alguém na frente dele?",
+            "options": [
+                "Sensor de distância",
+                "Parafuso colorido",
+                "Adesivo da equipe",
+                "Cabo desligado"
+            ],
+            "answer": 0,
+            "explanation": "O sensor de distância ajuda o robô a perceber obstáculos sem encostar neles."
+        },
+        {
+            "area": "Robótica",
+            "question": "2. Uma equipe quer que o robô siga uma faixa escura no chão. O que o robô precisa comparar?",
+            "options": [
+                "Claro e escuro",
+                "Alto e baixo da voz",
+                "Nome e sobrenome",
+                "Quente e frio da comida"
+            ],
+            "answer": 0,
+            "explanation": "Para seguir linha, o robô usa sensores para comparar áreas claras e escuras."
+        },
+        {
+            "area": "Robótica",
+            "question": "3. Um programa diz: andar 2 segundos, parar e virar à esquerda. Isso é um exemplo de:",
+            "options": [
+                "Sequência de comandos",
+                "Desenho de robô",
+                "Nome da bateria",
+                "Tipo de parafuso"
+            ],
+            "answer": 0,
+            "explanation": "Uma sequência de comandos organiza as ações que o robô deve executar."
+        },
+        {
+            "area": "Robótica",
+            "question": "4. Se o robô bate na parede várias vezes durante o teste, a melhor atitude da equipe é:",
+            "options": [
+                "Observar o erro e ajustar o programa",
+                "Guardar o robô e desistir",
+                "Pintar a parede",
+                "Apagar o nome da equipe"
+            ],
+            "answer": 0,
+            "explanation": "Na robótica, testar, observar e corrigir ajuda a melhorar o funcionamento do robô."
+        },
+        {
+            "area": "Robótica",
+            "question": "5. Qual frase mostra uma condição em um programa de robô?",
+            "options": [
+                "Se encontrar obstáculo, então parar",
+                "O robô é azul",
+                "A roda é redonda",
+                "A equipe tem quatro alunos"
+            ],
+            "answer": 0,
+            "explanation": "Condição é uma regra do tipo: se algo acontecer, então uma ação será feita."
+        },
+        {
+            "area": "Robótica",
+            "question": "6. Um robô com dois motores usa os motores principalmente para:",
+            "options": [
+                "Movimentar rodas ou partes do robô",
+                "Ler textos sozinho",
+                "Guardar água",
+                "Criar sombra"
+            ],
+            "answer": 0,
+            "explanation": "Motores transformam energia em movimento."
+        },
+        {
+            "area": "Robótica",
+            "question": "7. Um robô que responde perguntas usando inteligência artificial precisa principalmente:",
+            "options": [
+                "Interpretar a pergunta e gerar uma resposta",
+                "Ter rodas grandes",
+                "Ficar sempre parado",
+                "Ser pintado de verde"
+            ],
+            "answer": 0,
+            "explanation": "A inteligência artificial pode ajudar sistemas a interpretar informações e produzir respostas."
+        },
+        {
+            "area": "Português",
+            "question": "8. Leia: 'O robô perdeu o caminho e a equipe corrigiu o programa.' O que a equipe fez?",
+            "options": [
+                "Melhorou o programa depois do erro",
+                "Jogou o robô fora",
+                "Escondeu a pista",
+                "Trocou a escola"
+            ],
+            "answer": 0,
+            "explanation": "O texto indica que a equipe corrigiu o programa após perceber o erro."
+        },
+        {
+            "area": "Português",
+            "question": "9. Na frase 'O robô inteligente ajudou os alunos', qual palavra dá uma característica ao robô?",
+            "options": [
+                "Inteligente",
+                "Ajudou",
+                "Alunos",
+                "O"
+            ],
+            "answer": 0,
+            "explanation": "'Inteligente' caracteriza o robô."
+        },
+        {
+            "area": "Matemática",
+            "question": "10. Um robô empacotou 10 caixas de manhã e 15 à tarde. Quantas caixas ele empacotou ao todo?",
+            "options": [
+                "20",
+                "25",
+                "30",
+                "35"
+            ],
+            "answer": 1,
+            "explanation": "10 + 15 = 25 caixas."
+        },
+        {
+            "area": "Matemática",
+            "question": "11. Um robô deve cumprir uma meta de 20 peças. Ele fez 15. Quantas faltam?",
+            "options": [
+                "3",
+                "4",
+                "5",
+                "6"
+            ],
+            "answer": 2,
+            "explanation": "20 - 15 = 5 peças."
+        },
+        {
+            "area": "Ciências",
+            "question": "12. Um robô que usa luz para perceber o chão depende de qual fenômeno?",
+            "options": [
+                "Reflexão da luz",
+                "Crescimento das plantas",
+                "Chuva forte",
+                "Evaporação da água"
+            ],
+            "answer": 0,
+            "explanation": "Sensores de luz percebem a luz refletida pelo chão ou por objetos."
+        },
+        {
+            "area": "Ciências",
+            "question": "13. Para diminuir a transmissão de doenças, um robô poderia ajudar principalmente a:",
+            "options": [
+                "Higienizar ambientes ou lembrar a lavagem das mãos",
+                "Espalhar lixo no chão",
+                "Compartilhar copos",
+                "Fechar a ventilação sem motivo"
+            ],
+            "answer": 0,
+            "explanation": "Robôs podem auxiliar em limpeza, entrega sem contato e orientação de higiene."
+        },
+        {
+            "area": "Geografia",
+            "question": "14. Em um mapa simples da escola, a legenda serve para:",
+            "options": [
+                "Explicar símbolos e cores",
+                "Aumentar a bateria",
+                "Trocar o motor",
+                "Apagar caminhos"
+            ],
+            "answer": 0,
+            "explanation": "A legenda ajuda a entender o significado dos símbolos usados no mapa."
+        },
+        {
+            "area": "Geografia",
+            "question": "15. Se a parte superior de um mapa indica o Norte, a parte inferior normalmente indica:",
+            "options": [
+                "Sul",
+                "Leste",
+                "Oeste",
+                "Centro"
+            ],
+            "answer": 0,
+            "explanation": "Em muitos mapas, Norte fica em cima e Sul fica embaixo."
+        }
+    ],
+    "medio": [
+        {
+            "area": "Robótica",
+            "question": "1. Um robô seguidor de linha tem dois sensores: esquerdo e direito. Se o sensor esquerdo vê preto, uma ação adequada é:",
+            "options": [
+                "Corrigir o movimento para a esquerda",
+                "Desligar todos os motores",
+                "Ignorar a pista",
+                "Aumentar a altura da mesa"
+            ],
+            "answer": 0,
+            "explanation": "O sensor ajuda o robô a corrigir sua posição em relação à linha."
+        },
+        {
+            "area": "Robótica",
+            "question": "2. Um robô virtual lê uma pergunta e responde em texto. Esse tipo de sistema está mais ligado a:",
+            "options": [
+                "Inteligência artificial e linguagem",
+                "Engrenagem e pneu",
+                "Apenas parafuso e cola",
+                "Somente bateria"
+            ],
+            "answer": 0,
+            "explanation": "Sistemas que interpretam perguntas e geram respostas usam recursos de inteligência artificial e linguagem."
+        },
+        {
+            "area": "Robótica",
+            "question": "3. Em um teste, o robô só deve avançar se os dois sensores não encontrarem obstáculo. Qual regra representa isso?",
+            "options": [
+                "Se não houver obstáculo à esquerda e à direita, avançar",
+                "Sempre avançar, mesmo com obstáculo",
+                "Se houver obstáculo, acelerar",
+                "Se a bateria acabar, correr"
+            ],
+            "answer": 0,
+            "explanation": "A regra exige duas condições ao mesmo tempo para o robô avançar com segurança."
+        },
+        {
+            "area": "Robótica",
+            "question": "4. Um sensor ultrassônico é útil porque pode:",
+            "options": [
+                "Medir distância até um objeto",
+                "Escrever poesia sozinho",
+                "Substituir todas as rodas",
+                "Apagar a luz da sala"
+            ],
+            "answer": 0,
+            "explanation": "Sensores ultrassônicos são usados para estimar distância e detectar obstáculos."
+        },
+        {
+            "area": "Robótica",
+            "question": "5. Se um robô usa engrenagens entre o motor e a roda, a equipe deve observar:",
+            "options": [
+                "Como o movimento do motor chega à roda",
+                "Apenas a cor da engrenagem",
+                "Somente o nome do robô",
+                "O tamanho da folha de prova"
+            ],
+            "answer": 0,
+            "explanation": "Engrenagens transmitem movimento e podem alterar sentido e força."
+        },
+        {
+            "area": "Robótica",
+            "question": "6. Um bom teste de robô deve ter:",
+            "options": [
+                "Objetivo, observação e ajuste",
+                "Apenas sorte",
+                "Somente decoração",
+                "Nenhum registro"
+            ],
+            "answer": 0,
+            "explanation": "Testes ajudam a verificar se o robô cumpre o objetivo e o que precisa ser ajustado."
+        },
+        {
+            "area": "Robótica",
+            "question": "7. Se um robô de limpeza evita contato com pessoas e higieniza um espaço, ele contribui para:",
+            "options": [
+                "Reduzir riscos de contaminação",
+                "Aumentar o compartilhamento de objetos",
+                "Impedir qualquer estudo",
+                "Desligar a internet"
+            ],
+            "answer": 0,
+            "explanation": "Robôs podem ajudar em tarefas de limpeza e redução de contato em ambientes coletivos."
+        },
+        {
+            "area": "Português",
+            "question": "8. Na frase 'O robô bateu as rodas', a expressão é literal quando significa que:",
+            "options": [
+                "As rodas realmente bateram em algo",
+                "Alguém faleceu",
+                "O robô escreveu uma poesia",
+                "A equipe ganhou medalha"
+            ],
+            "answer": 0,
+            "explanation": "Sentido literal é o sentido direto das palavras."
+        },
+        {
+            "area": "Português",
+            "question": "9. Qual alternativa completa melhor a frase com ideia de causa? 'O robô parou ___ o sensor detectou uma parede.'",
+            "options": [
+                "porque",
+                "mas",
+                "ou",
+                "embora"
+            ],
+            "answer": 0,
+            "explanation": "'Porque' indica causa ou explicação."
+        },
+        {
+            "area": "Matemática",
+            "question": "10. Um robô tinha meta de 50 produtos por hora. Em uma hora fez 40. Quanto faltou para atingir a meta?",
+            "options": [
+                "5",
+                "10",
+                "15",
+                "20"
+            ],
+            "answer": 1,
+            "explanation": "50 - 40 = 10 produtos."
+        },
+        {
+            "area": "Matemática",
+            "question": "11. Em 4 horas, um robô cumpriu a meta em 1 hora. Qual fração representa isso?",
+            "options": [
+                "1/4",
+                "1/2",
+                "3/4",
+                "4/1"
+            ],
+            "answer": 0,
+            "explanation": "Cumprir a meta em 1 de 4 horas corresponde a 1/4."
+        },
+        {
+            "area": "Ciências",
+            "question": "12. Se a sombra de um objeto aparece, isso mostra que:",
+            "options": [
+                "A luz foi bloqueada por algum objeto",
+                "O motor ficou mais rápido",
+                "A bateria está carregando sozinha",
+                "O mapa não tem legenda"
+            ],
+            "answer": 0,
+            "explanation": "A sombra se forma quando um objeto bloqueia a passagem da luz."
+        },
+        {
+            "area": "Ciências",
+            "question": "13. Em um robô, a energia da bateria é necessária para:",
+            "options": [
+                "Alimentar sensores, controlador e motores",
+                "Colorir automaticamente a pista",
+                "Criar vento sem peças",
+                "Apagar os comandos"
+            ],
+            "answer": 0,
+            "explanation": "Sem energia, os componentes eletrônicos e motores não funcionam."
+        },
+        {
+            "area": "Geografia",
+            "question": "14. Se o robô está virado para o Norte e gira 90 graus para a direita, ele passa a apontar para:",
+            "options": [
+                "Leste",
+                "Oeste",
+                "Sul",
+                "Noroeste"
+            ],
+            "answer": 0,
+            "explanation": "Virando à direita a partir do Norte, o sentido passa a ser Leste."
+        },
+        {
+            "area": "Geografia",
+            "question": "15. Um robô precisa sair da sala e chegar ao pátio evitando um corredor bloqueado. O melhor recurso é:",
+            "options": [
+                "Usar o mapa para planejar uma rota alternativa",
+                "Ignorar o bloqueio",
+                "Apagar todos os caminhos",
+                "Escolher o caminho mais bonito"
+            ],
+            "answer": 0,
+            "explanation": "O mapa permite visualizar caminhos e planejar outra rota."
+        }
+    ],
+    "dificil": [
+        {
+            "area": "Robótica",
+            "question": "1. Um robô com dois sensores de cor usa a regra: se esquerdo vê preto, vira à esquerda; senão, se direito vê preto, vira à direita; senão, segue em frente. Quando ele segue em frente?",
+            "options": [
+                "Quando nenhum dos dois sensores vê preto",
+                "Quando só o esquerdo vê preto",
+                "Quando só o direito vê preto",
+                "Quando os dois veem preto"
+            ],
+            "answer": 0,
+            "explanation": "Pela regra, o comando 'seguir em frente' ocorre somente quando as duas condições anteriores são falsas."
+        },
+        {
+            "area": "Robótica",
+            "question": "2. Um robô precisa dar meia-volta quando os dois sensores veem preto. Qual condição representa melhor isso?",
+            "options": [
+                "Se sensor esquerdo = preto e sensor direito = preto",
+                "Se sensor esquerdo = branco ou sensor direito = branco",
+                "Se qualquer sensor estiver desligado",
+                "Se a roda for maior que a pista"
+            ],
+            "answer": 0,
+            "explanation": "Para os dois sensores identificarem preto ao mesmo tempo, usamos a condição com 'e'."
+        },
+        {
+            "area": "Robótica",
+            "question": "3. Uma equipe alterou apenas a velocidade do motor esquerdo e o robô começou a fazer curva. Isso aconteceu porque:",
+            "options": [
+                "As velocidades dos motores influenciam a direção do robô",
+                "A cor do nome mudou o caminho",
+                "O sensor virou bateria",
+                "A pista ficou sem matemática"
+            ],
+            "answer": 0,
+            "explanation": "Diferenças entre as velocidades dos motores podem fazer o robô virar."
+        },
+        {
+            "area": "Robótica",
+            "question": "4. Em um robô com engrenagens, duas engrenagens encostadas giram normalmente em:",
+            "options": [
+                "Sentidos opostos",
+                "Sempre no mesmo sentido",
+                "Linha reta sem girar",
+                "Nenhum sentido"
+            ],
+            "answer": 0,
+            "explanation": "Quando uma engrenagem move outra diretamente, elas giram em sentidos opostos."
+        },
+        {
+            "area": "Robótica",
+            "question": "5. Um sensor giroscópio ajuda uma equipe principalmente a:",
+            "options": [
+                "Medir giros e orientar curvas",
+                "Medir a cor da linha",
+                "Guardar poemas",
+                "Aumentar o número de rodas"
+            ],
+            "answer": 0,
+            "explanation": "O giroscópio está ligado à rotação e orientação do robô."
+        },
+        {
+            "area": "Robótica",
+            "question": "6. Se um robô usa dados de sensor para corrigir o próprio caminho várias vezes, ele está trabalhando em um processo de:",
+            "options": [
+                "Percepção, decisão e ação repetidas",
+                "Pintura sem planejamento",
+                "Decoração fixa",
+                "Leitura sem resposta"
+            ],
+            "answer": 0,
+            "explanation": "Robôs autônomos costumam repetir ciclos de perceber o ambiente, decidir e agir."
+        },
+        {
+            "area": "Robótica",
+            "question": "7. A arena é branca e a linha é preta. Por que essa diferença é importante para o seguidor de linha?",
+            "options": [
+                "Porque o sensor precisa distinguir a linha do fundo",
+                "Porque a bateria só funciona em branco",
+                "Porque o motor lê letras",
+                "Porque a roda escolhe a cor"
+            ],
+            "answer": 0,
+            "explanation": "Sem contraste entre linha e fundo, o sensor pode não identificar corretamente o caminho."
+        },
+        {
+            "area": "Português",
+            "question": "8. Um robô interpretou 'chutar o balde' como bater o pé em um balde. O erro foi de:",
+            "options": [
+                "Interpretação de sentido figurado",
+                "Soma de números pares",
+                "Leitura de mapas",
+                "Medição de sombra"
+            ],
+            "answer": 0,
+            "explanation": "Expressões figuradas não devem ser interpretadas apenas no sentido literal."
+        },
+        {
+            "area": "Português",
+            "question": "9. Qual alternativa apresenta uma instrução mais precisa para um robô?",
+            "options": [
+                "Avance 20 centímetros, vire 90 graus à direita e pare",
+                "Ande bastante e vire depois",
+                "Faça um caminho legal",
+                "Vá para lá quando der"
+            ],
+            "answer": 0,
+            "explanation": "Instruções precisas indicam medida, direção e ação."
+        },
+        {
+            "area": "Matemática",
+            "question": "10. Um robô trabalhou 8 horas. Em 2 horas cumpriu a meta. Qual fração do tempo teve meta cumprida?",
+            "options": [
+                "1/4",
+                "1/2",
+                "2/3",
+                "3/4"
+            ],
+            "answer": 0,
+            "explanation": "2 de 8 horas equivalem a 2/8, que simplifica para 1/4."
+        },
+        {
+            "area": "Matemática",
+            "question": "11. Um robô fez 48, 46, 50 e 36 produtos em quatro horas. Em quantas horas ele ficou abaixo da meta de 50?",
+            "options": [
+                "3",
+                "2",
+                "1",
+                "4"
+            ],
+            "answer": 0,
+            "explanation": "48, 46 e 36 estão abaixo de 50. Apenas 50 atingiu a meta."
+        },
+        {
+            "area": "Ciências",
+            "question": "12. Ao amanhecer, a posição da sombra muda em relação ao fim da tarde porque:",
+            "options": [
+                "A posição aparente do Sol muda ao longo do dia",
+                "A bateria empurra a sombra",
+                "O mapa gira sozinho",
+                "A roda bloqueia o Norte"
+            ],
+            "answer": 0,
+            "explanation": "A sombra depende da posição da fonte de luz, como o Sol."
+        },
+        {
+            "area": "Ciências",
+            "question": "13. Robôs usados em hospitais durante uma doença contagiosa podem reduzir riscos porque:",
+            "options": [
+                "Podem diminuir contato direto em algumas tarefas",
+                "Substituem a higiene das mãos para sempre",
+                "Eliminam qualquer vírus do mundo",
+                "Impedem a limpeza de ambientes"
+            ],
+            "answer": 0,
+            "explanation": "Robôs podem ajudar em entregas, limpeza e atendimento remoto, reduzindo alguns contatos."
+        },
+        {
+            "area": "Geografia",
+            "question": "14. O robô começa voltado para o Norte. Ele gira 90° à direita, anda, depois gira 90° à esquerda. Para qual sentido ele fica voltado no final?",
+            "options": [
+                "Norte",
+                "Leste",
+                "Sul",
+                "Oeste"
+            ],
+            "answer": 0,
+            "explanation": "Direita a partir do Norte leva ao Leste; depois esquerda a partir do Leste volta ao Norte."
+        },
+        {
+            "area": "Geografia",
+            "question": "15. Em uma malha, o robô sai de A1, anda duas casas para Leste e uma para Norte. Em que posição chega?",
+            "options": [
+                "C2",
+                "B3",
+                "C1",
+                "A2"
+            ],
+            "answer": 0,
+            "explanation": "De A1, duas casas para Leste levam a C1; uma para Norte leva a C2."
+        }
+    ]
 },
-
-{
-question:"2. Qual componente funciona como o cérebro do robô?",
-options:[
-"Motor",
-"Roda",
-"Controlador",
-"Parafuso"
-],
-answer:2,
-explanation:"O controlador processa informações e toma decisões no robô."
-},
-
-{
-question:"3. Para que servem os motores em um robô?",
-options:[
-"Produzir luz",
-"Movimentar o robô",
-"Fazer barulho",
-"Guardar energia"
-],
-answer:1,
-explanation:"Os motores são responsáveis pelos movimentos do robô."
-},
-
-{
-question:"4. O que significa programar um robô?",
-options:[
-"Pintar o robô",
-"Criar instruções para ele executar",
-"Trocar peças",
-"Lavar o robô"
-],
-answer:1,
-explanation:"Programar significa criar comandos que o robô seguirá."
-},
-
-{
-question:"5. O que o robô pode fazer ao detectar um obstáculo?",
-options:[
-"Ignorar",
-"Desviar",
-"Voar",
-"Explodir"
-],
-answer:1,
-explanation:"Com sensores e programação, o robô pode desviar de obstáculos."
-},
-
-{
-question:"6. Qual sensor pode ajudar um robô a seguir uma linha preta?",
-options:[
-"Sensor de luz",
-"Sensor de chuva",
-"Sensor de fumaça",
-"Sensor de vento"
-],
-answer:0,
-explanation:"O sensor de luz identifica diferenças entre claro e escuro para seguir linhas."
-},
-
-{
-question:"7. O que é necessário para um robô funcionar?",
-options:[
-"Apenas tinta",
-"Somente rodas",
-"Energia elétrica",
-"Água"
-],
-answer:2,
-explanation:"Os robôs precisam de energia para alimentar motores, sensores e controladores."
-},
-
-{
-question:"8. Qual destes pode ser considerado um robô?",
-options:[
-"Uma vassoura comum",
-"Um aspirador automático",
-"Um lápis",
-"Uma cadeira"
-],
-answer:1,
-explanation:"Aspiradores automáticos utilizam sensores e programação para se locomover."
-},
-
-{
-question:"9. O que acontece se um robô não tiver programação?",
-options:[
-"Ele fica mais rápido",
-"Ele age sozinho",
-"Ele não sabe o que fazer",
-"Ele começa a voar"
-],
-answer:2,
-explanation:"Sem programação, o robô não recebe instruções para executar tarefas."
-},
-
-{
-question:"10. O que faz um sensor ultrassônico?",
-options:[
-"Mede distância",
-"Produz música",
-"Pinta objetos",
-"Acende lâmpadas"
-],
-answer:0,
-explanation:"Sensores ultrassônicos são usados para medir distância e detectar obstáculos."
-},
-
-{
-question:"11. O que é um algoritmo?",
-options:[
-"Um tipo de robô",
-"Uma sequência de passos",
-"Uma bateria",
-"Uma roda"
-],
-answer:1,
-explanation:"Algoritmo é um conjunto organizado de instruções para resolver um problema."
-},
-
-{
-question:"12. Em competições de robótica, os robôs precisam:",
-options:[
-"Seguir regras e cumprir desafios",
-"Ser pintados de azul",
-"Ter sempre quatro rodas",
-"Ser gigantes"
-],
-answer:0,
-explanation:"As competições possuem regras específicas e desafios que os robôs devem cumprir."
-},
-
-{
-question:"13. Qual destes NÃO é um componente comum em robôs?",
-options:[
-"Sensor",
-"Motor",
-"Controlador",
-"Travesseiro"
-],
-answer:3,
-explanation:"Sensores, motores e controladores fazem parte da estrutura de muitos robôs."
-},
-
-{
-question:"14. Para que serve uma bateria em um robô?",
-options:[
-"Dar energia",
-"Produzir fumaça",
-"Fazer barulho",
-"Refletir luz"
-],
-answer:0,
-explanation:"A bateria fornece energia elétrica para o funcionamento do robô."
-},
-
-{
-question:"15. Qual habilidade é importante na robótica?",
-options:[
-"Trabalho em equipe",
-"Desorganização",
-"Ignorar problemas",
-"Não testar o robô"
-],
-answer:0,
-explanation:"Na robótica, colaboração, testes e resolução de problemas são muito importantes."
+  "5": {
+    "facil": [
+        {
+            "area": "Robótica",
+            "question": "1. Em um robô autônomo, sensores são importantes porque:",
+            "options": [
+                "Fornecem informações do ambiente",
+                "Servem apenas de enfeite",
+                "Substituem a bateria",
+                "Impedem qualquer erro"
+            ],
+            "answer": 0,
+            "explanation": "Sensores permitem ao robô perceber o ambiente e agir conforme a situação."
+        },
+        {
+            "area": "Robótica",
+            "question": "2. Um robô jornalístico virtual que lê notícias e responde perguntas usa principalmente:",
+            "options": [
+                "Inteligência artificial",
+                "Apenas engrenagens",
+                "Somente rodas",
+                "Papel e lápis"
+            ],
+            "answer": 0,
+            "explanation": "Robôs virtuais desse tipo usam inteligência artificial para processar linguagem e gerar respostas."
+        },
+        {
+            "area": "Robótica",
+            "question": "3. Qual item permite ao robô executar comandos como virar, parar e avançar?",
+            "options": [
+                "Programa",
+                "Etiqueta",
+                "Pintura",
+                "Caixa"
+            ],
+            "answer": 0,
+            "explanation": "O programa contém as instruções que o robô executa."
+        },
+        {
+            "area": "Robótica",
+            "question": "4. Um robô equipado com sensor ultrassônico pode:",
+            "options": [
+                "Detectar obstáculo sem tocar nele",
+                "Ler pensamento",
+                "Transformar sombra em motor",
+                "Criar uma roda sozinho"
+            ],
+            "answer": 0,
+            "explanation": "Esse tipo de sensor ajuda a medir distância até objetos."
+        },
+        {
+            "area": "Robótica",
+            "question": "5. Em uma equipe de robótica, testar o robô serve para:",
+            "options": [
+                "Encontrar falhas e melhorar a solução",
+                "Evitar aprender",
+                "Escolher apenas a cor",
+                "Apagar o projeto"
+            ],
+            "answer": 0,
+            "explanation": "Testes ajudam a identificar problemas e ajustar o robô."
+        },
+        {
+            "area": "Robótica",
+            "question": "6. Se o robô deve parar quando a distância é pequena, ele precisa usar:",
+            "options": [
+                "Leitura do sensor e condição no programa",
+                "Somente adesivos",
+                "Apenas o nome da equipe",
+                "Uma pista invisível"
+            ],
+            "answer": 0,
+            "explanation": "A decisão de parar depende de uma condição baseada no sensor."
+        },
+        {
+            "area": "Robótica",
+            "question": "7. Engrenagens em um robô são usadas para:",
+            "options": [
+                "Transmitir movimento entre peças",
+                "Interpretar poesia",
+                "Guardar mapas",
+                "Medir temperatura da sala"
+            ],
+            "answer": 0,
+            "explanation": "Engrenagens transmitem movimento e podem alterar força, velocidade ou sentido de rotação."
+        },
+        {
+            "area": "Português",
+            "question": "8. Leia: 'O robô analisou a fala e respondeu de forma coerente.' A palavra 'coerente' indica que a resposta foi:",
+            "options": [
+                "Com sentido em relação à pergunta",
+                "Sem nenhuma relação",
+                "Apenas mais longa",
+                "Sempre engraçada"
+            ],
+            "answer": 0,
+            "explanation": "Uma resposta coerente combina com o que foi perguntado."
+        },
+        {
+            "area": "Português",
+            "question": "9. Qual alternativa mostra linguagem mais clara para uma instrução técnica?",
+            "options": [
+                "Se o sensor detectar preto, vire à esquerda",
+                "Dá um jeito aí",
+                "Vai como puder",
+                "Faz alguma coisa"
+            ],
+            "answer": 0,
+            "explanation": "Instruções técnicas devem ser claras e indicar condição e ação."
+        },
+        {
+            "area": "Matemática",
+            "question": "10. Um robô produziu 50 peças em uma hora e 45 na outra. Quantas fez nas duas horas?",
+            "options": [
+                "85",
+                "90",
+                "95",
+                "100"
+            ],
+            "answer": 2,
+            "explanation": "50 + 45 = 95 peças."
+        },
+        {
+            "area": "Matemática",
+            "question": "11. Um robô cumpriu a meta em 3 de 6 horas. Qual fração representa isso?",
+            "options": [
+                "1/2",
+                "1/3",
+                "2/3",
+                "3/4"
+            ],
+            "answer": 0,
+            "explanation": "3 de 6 horas equivalem a 3/6, que é igual a 1/2."
+        },
+        {
+            "area": "Ciências",
+            "question": "12. A sombra de um robô muda durante o dia principalmente por causa:",
+            "options": [
+                "Da posição do Sol no céu",
+                "Do tamanho do nome do robô",
+                "Da cor da equipe",
+                "Do número de questões"
+            ],
+            "answer": 0,
+            "explanation": "A posição da fonte de luz altera a direção e tamanho da sombra."
+        },
+        {
+            "area": "Ciências",
+            "question": "13. Robôs que higienizam ambientes precisam considerar que:",
+            "options": [
+                "A limpeza ajuda a reduzir microrganismos em superfícies",
+                "Toda sujeira é invisível para sempre",
+                "Água sempre substitui energia elétrica",
+                "Sensores não ajudam em nada"
+            ],
+            "answer": 0,
+            "explanation": "A limpeza adequada pode reduzir sujeira e microrganismos em superfícies."
+        },
+        {
+            "area": "Geografia",
+            "question": "14. Se um robô vai do ponto inicial para o Leste, ele está se deslocando para:",
+            "options": [
+                "A direita em muitos mapas orientados com Norte para cima",
+                "Sempre para baixo",
+                "Sempre para Oeste",
+                "Dentro da legenda"
+            ],
+            "answer": 0,
+            "explanation": "Em mapas com Norte para cima, o Leste fica geralmente à direita."
+        },
+        {
+            "area": "Geografia",
+            "question": "15. Um trajeto com pontos de referência ajuda o robô porque:",
+            "options": [
+                "Facilita localizar caminhos e destinos",
+                "Remove a necessidade de energia",
+                "Troca os motores por mapas",
+                "Impede qualquer curva"
+            ],
+            "answer": 0,
+            "explanation": "Pontos de referência ajudam na orientação espacial."
+        }
+    ],
+    "medio": [
+        {
+            "area": "Robótica",
+            "question": "1. Um robô usa a regra: se distância < 20 cm, parar; senão, avançar. O que acontece quando a distância é 15 cm?",
+            "options": [
+                "Ele deve parar",
+                "Ele deve avançar",
+                "Ele deve escrever poesia",
+                "Ele deve trocar a roda"
+            ],
+            "answer": 0,
+            "explanation": "15 cm é menor que 20 cm, então a condição de parar é verdadeira."
+        },
+        {
+            "area": "Robótica",
+            "question": "2. Um robô seguidor de linha usa dois sensores para corrigir sua rota. A vantagem de usar dois sensores é:",
+            "options": [
+                "Perceber melhor se a linha está mais à esquerda ou à direita",
+                "Eliminar a necessidade de programação",
+                "Fazer o robô voar",
+                "Impedir que a bateria acabe"
+            ],
+            "answer": 0,
+            "explanation": "Dois sensores ajudam a comparar a posição da linha em relação ao robô."
+        },
+        {
+            "area": "Robótica",
+            "question": "3. Um sistema de IA pode errar ao interpretar uma expressão popular porque:",
+            "options": [
+                "Pode entender as palavras no sentido literal",
+                "Não usa energia elétrica",
+                "Só entende engrenagens",
+                "Nunca lê textos"
+            ],
+            "answer": 0,
+            "explanation": "Expressões figuradas podem ser difíceis se o sistema interpretar apenas o significado literal."
+        },
+        {
+            "area": "Robótica",
+            "question": "4. Uma equipe registrou os resultados de cada teste do robô. Isso ajuda porque:",
+            "options": [
+                "Permite comparar mudanças e tomar decisões",
+                "Serve apenas para decorar o caderno",
+                "Apaga os erros automaticamente",
+                "Substitui todos os sensores"
+            ],
+            "answer": 0,
+            "explanation": "Registros ajudam a analisar o desempenho antes e depois dos ajustes."
+        },
+        {
+            "area": "Robótica",
+            "question": "5. Se duas engrenagens estão encostadas, a segunda gira porque:",
+            "options": [
+                "Recebe movimento transmitido pela primeira",
+                "Recebe uma notícia da internet",
+                "Lê a cor do chão",
+                "Aumenta a sombra"
+            ],
+            "answer": 0,
+            "explanation": "O contato entre os dentes transmite movimento de uma engrenagem para outra."
+        },
+        {
+            "area": "Robótica",
+            "question": "6. Para um robô seguir uma trajetória com curvas de 90°, um sensor ou cálculo de orientação ajuda a:",
+            "options": [
+                "Controlar melhor o ângulo das curvas",
+                "Escolher a cor da medalha",
+                "Apagar a pista",
+                "Trocar a língua da prova"
+            ],
+            "answer": 0,
+            "explanation": "Medir ou controlar ângulos ajuda a fazer curvas mais precisas."
+        },
+        {
+            "area": "Robótica",
+            "question": "7. Em um programa, colocar uma condição mais geral antes de uma mais específica pode causar erro porque:",
+            "options": [
+                "A primeira condição pode ser executada antes de testar a situação desejada",
+                "O robô fica sem rodas",
+                "O mapa perde o Norte",
+                "A bateria vira sensor"
+            ],
+            "answer": 0,
+            "explanation": "A ordem das condições influencia qual comando será executado."
+        },
+        {
+            "area": "Português",
+            "question": "8. Leia: 'O robô não compreendeu a expressão figurada.' Isso significa que ele teve dificuldade com:",
+            "options": [
+                "Um sentido não literal da linguagem",
+                "Uma soma simples",
+                "Uma direção no mapa",
+                "Uma engrenagem"
+            ],
+            "answer": 0,
+            "explanation": "Expressão figurada usa palavras com sentido diferente do literal."
+        },
+        {
+            "area": "Português",
+            "question": "9. Qual conectivo completa melhor: 'O robô virou à esquerda ___ o sensor esquerdo detectou a linha.'",
+            "options": [
+                "porque",
+                "porém",
+                "ou",
+                "apesar"
+            ],
+            "answer": 0,
+            "explanation": "'Porque' apresenta a causa da ação."
+        },
+        {
+            "area": "Matemática",
+            "question": "10. Em 5 horas, um robô produziu: 50, 45, 20, 0 e 35 peças. Em quantas horas ele atingiu a meta de 50?",
+            "options": [
+                "1",
+                "2",
+                "3",
+                "4"
+            ],
+            "answer": 0,
+            "explanation": "Apenas em uma hora ele produziu exatamente 50 peças."
+        },
+        {
+            "area": "Matemática",
+            "question": "11. Um ajuste no robô durou 15 minutos em 3 momentos do dia. Quanto tempo total foi gasto em ajustes?",
+            "options": [
+                "30 minutos",
+                "45 minutos",
+                "60 minutos",
+                "75 minutos"
+            ],
+            "answer": 1,
+            "explanation": "3 × 15 = 45 minutos."
+        },
+        {
+            "area": "Ciências",
+            "question": "12. Um sensor de cor funciona melhor quando há:",
+            "options": [
+                "Contraste entre a linha e o fundo",
+                "Linha e fundo da mesma cor",
+                "Bateria descarregada",
+                "Engrenagens escondidas"
+            ],
+            "answer": 0,
+            "explanation": "O contraste facilita diferenciar as cores."
+        },
+        {
+            "area": "Ciências",
+            "question": "13. Se uma roda patina em uma superfície muito lisa, uma explicação provável envolve:",
+            "options": [
+                "Atrito insuficiente",
+                "Excesso de legenda",
+                "Falta de poemas",
+                "Muitos pontos cardeais"
+            ],
+            "answer": 0,
+            "explanation": "O atrito entre roda e chão influencia o movimento."
+        },
+        {
+            "area": "Geografia",
+            "question": "14. O robô está virado para o Sul. Se gira 90° à esquerda, fica voltado para:",
+            "options": [
+                "Leste",
+                "Oeste",
+                "Norte",
+                "Sul"
+            ],
+            "answer": 0,
+            "explanation": "Ao olhar para o Sul, virar à esquerda leva ao Leste."
+        },
+        {
+            "area": "Geografia",
+            "question": "15. Em uma planta da escola, a escala serve para:",
+            "options": [
+                "Relacionar distâncias do desenho com distâncias reais",
+                "Mostrar o nível da bateria",
+                "Indicar o número de sensores",
+                "Trocar o significado das palavras"
+            ],
+            "answer": 0,
+            "explanation": "A escala ajuda a interpretar medidas em mapas e plantas."
+        }
+    ],
+    "dificil": [
+        {
+            "area": "Robótica",
+            "question": "1. Um robô executa: se sensor esquerdo = preto, vira à esquerda; senão, se sensor direito = preto, vira à direita; senão, segue. Se os dois sensores veem preto, o que ocorre?",
+            "options": [
+                "Vira à esquerda",
+                "Vira à direita",
+                "Segue em frente",
+                "Para por falta de regra"
+            ],
+            "answer": 0,
+            "explanation": "A primeira condição verdadeira é a do sensor esquerdo, então o robô vira à esquerda antes de testar a segunda."
+        },
+        {
+            "area": "Robótica",
+            "question": "2. Para fazer o robô dar uma volta completa somente quando os dois sensores veem preto, qual teste deve vir explicitamente no programa?",
+            "options": [
+                "sensor_esquerdo = preto e sensor_direito = preto",
+                "sensor_esquerdo = preto ou sensor_direito = branco",
+                "sensor_esquerdo = branco e bateria = baixa",
+                "motor = rápido ou mapa = grande"
+            ],
+            "answer": 0,
+            "explanation": "A ação deve depender dos dois sensores identificarem preto ao mesmo tempo."
+        },
+        {
+            "area": "Robótica",
+            "question": "3. Um robô com quatro engrenagens em sequência tem o motor ligado à primeira e a roda à quarta. Para programar corretamente, é importante saber:",
+            "options": [
+                "O sentido final de rotação transmitido até a roda",
+                "A cor da camiseta da equipe",
+                "A quantidade de letras do nome",
+                "O material da prova"
+            ],
+            "answer": 0,
+            "explanation": "Engrenagens podem inverter sentidos de rotação, afetando o movimento final da roda."
+        },
+        {
+            "area": "Robótica",
+            "question": "4. Se um robô usa sensor de distância, sensor de cor e motores, o controlador precisa:",
+            "options": [
+                "Processar leituras e acionar motores conforme o programa",
+                "Apenas enfeitar o circuito",
+                "Ignorar todos os sensores",
+                "Funcionar sem energia"
+            ],
+            "answer": 0,
+            "explanation": "O controlador coordena entradas dos sensores e saídas para motores."
+        },
+        {
+            "area": "Robótica",
+            "question": "5. Em um teste, o robô falha só quando a luz ambiente está muito forte. Uma hipótese técnica é:",
+            "options": [
+                "A leitura do sensor de luz pode estar sendo afetada",
+                "A engrenagem mudou de nome",
+                "A matemática deixou de existir",
+                "A legenda do mapa quebrou"
+            ],
+            "answer": 0,
+            "explanation": "Condições de iluminação podem interferir em sensores ópticos."
+        },
+        {
+            "area": "Robótica",
+            "question": "6. Um programa com várias decisões aninhadas deve ser analisado com cuidado porque:",
+            "options": [
+                "A ordem e a dependência entre condições mudam o resultado",
+                "Todo robô ignora decisões",
+                "As alternativas desaparecem",
+                "A bateria escolhe a resposta"
+            ],
+            "answer": 0,
+            "explanation": "Condições dentro de outras condições podem produzir comportamentos diferentes."
+        },
+        {
+            "area": "Robótica",
+            "question": "7. Um robô deve reduzir contato humano durante entregas em um hospital. O objetivo principal dessa automação é:",
+            "options": [
+                "Apoiar segurança e logística em ambiente sensível",
+                "Aumentar filas sem necessidade",
+                "Eliminar mapas da cidade",
+                "Impedir higienização"
+            ],
+            "answer": 0,
+            "explanation": "Robôs podem auxiliar em tarefas de entrega e reduzir contatos em alguns contextos."
+        },
+        {
+            "area": "Português",
+            "question": "8. Ao pedir que uma IA escreva um poema com rimas, o comando precisa indicar:",
+            "options": [
+                "Tema, forma e objetivo do texto",
+                "Apenas a cor do robô",
+                "Somente a quantidade de rodas",
+                "A direção Norte"
+            ],
+            "answer": 0,
+            "explanation": "Um pedido claro orienta melhor a geração do texto."
+        },
+        {
+            "area": "Português",
+            "question": "9. Na frase 'Sensores guiam o robô, pois indicam obstáculos', a palavra 'pois' expressa:",
+            "options": [
+                "Explicação",
+                "Oposição",
+                "Dúvida",
+                "Lugar"
+            ],
+            "answer": 0,
+            "explanation": "'Pois' introduz uma explicação para a afirmação anterior."
+        },
+        {
+            "area": "Matemática",
+            "question": "10. Um robô deveria empacotar 50 produtos por hora. Em 8 horas, cumpriu a meta em 2 horas. Qual porcentagem de horas com meta cumprida?",
+            "options": [
+                "25%",
+                "20%",
+                "40%",
+                "50%"
+            ],
+            "answer": 0,
+            "explanation": "2 em 8 equivale a 2/8 = 1/4 = 25%."
+        },
+        {
+            "area": "Matemática",
+            "question": "11. Um robô ficou parado para ajuste em 4 períodos de 15 minutos. Em uma jornada de 8 horas, quanto tempo ele ficou ativo?",
+            "options": [
+                "7 horas",
+                "7 horas e 15 minutos",
+                "7 horas e 30 minutos",
+                "8 horas"
+            ],
+            "answer": 0,
+            "explanation": "4 × 15 = 60 minutos, ou 1 hora. 8 horas - 1 hora = 7 horas."
+        },
+        {
+            "area": "Ciências",
+            "question": "12. Um robô que detecta obstáculo sem tocar nele utiliza uma medição relacionada a:",
+            "options": [
+                "Distância",
+                "Massa da palavra",
+                "Quantidade de versos",
+                "Nome do bairro"
+            ],
+            "answer": 0,
+            "explanation": "Detectar obstáculo sem contato envolve medir ou estimar distância."
+        },
+        {
+            "area": "Ciências",
+            "question": "13. Em uma pista com pouca aderência, aumentar a velocidade pode piorar o controle porque:",
+            "options": [
+                "As rodas podem escorregar mais facilmente",
+                "A legenda muda de lugar",
+                "O sensor vira motor",
+                "A sombra desaparece à noite"
+            ],
+            "answer": 0,
+            "explanation": "Atrito e aderência influenciam estabilidade e controle do movimento."
+        },
+        {
+            "area": "Geografia",
+            "question": "14. O robô inicia voltado para o Norte. Faz: direita, frente, direita, frente, esquerda. Para qual sentido fica voltado ao final?",
+            "options": [
+                "Leste",
+                "Norte",
+                "Sul",
+                "Oeste"
+            ],
+            "answer": 0,
+            "explanation": "Norte + direita = Leste; depois direita = Sul; depois esquerda = Leste."
+        },
+        {
+            "area": "Geografia",
+            "question": "15. Um robô usa uma planta baixa para chegar a uma sala. Se o caminho direto está bloqueado, a melhor decisão espacial é:",
+            "options": [
+                "Recalcular o percurso usando outro corredor indicado no mapa",
+                "Seguir pelo bloqueio",
+                "Desligar todos os sensores",
+                "Ignorar pontos de referência"
+            ],
+            "answer": 0,
+            "explanation": "A planta permite identificar trajetos alternativos e pontos de referência."
+        }
+    ]
 }
+};
 
-];
+const LEVEL_LABELS = {
+  facil: "Fácil",
+  medio: "Médio",
+  dificil: "Difícil"
+};
 
+const LEVEL_DESCRIPTIONS = {
+  facil: "Comece revisando os conceitos básicos de robótica.",
+  medio: "Treine interpretação, lógica e funcionamento dos robôs.",
+  dificil: "Desafie seu raciocínio com situações de teste e decisão."
+};
+
+const LEVEL_BADGES = {
+  facil: "green",
+  medio: "yellow",
+  dificil: "red"
+};
+
+let selectedGrade = null;
+let selectedLevel = null;
+let questions = [];
 let currentQuestion = 0;
 let score = 0;
 let studentName = "";
 let studentAnswers = [];
+let resultsAlreadySent = false;
 
-const startScreen = document.getElementById("startScreen");
-const quiz = document.getElementById("quiz");
+const app = document.getElementById("app");
 const scoreElement = document.getElementById("score");
+const heroSection = document.getElementById("heroSection");
+const footerSection = document.getElementById("footerSection");
 
-function startQuiz(){
-const nameInput = document.getElementById("studentName");
-studentName = nameInput.value.trim();
-
-if(studentName === ""){
-alert("Digite seu nome antes de começar o quiz.");
-nameInput.focus();
-return;
+function showHero() {
+  heroSection.classList.remove("hidden");
 }
 
-startScreen.style.display = "none";
-loadQuestion();
+function hideHero() {
+  heroSection.classList.add("hidden");
 }
 
-function loadQuestion(){
-
-const q = questions[currentQuestion];
-
-quiz.innerHTML = `
-<div class="student-info">
-<strong>Aluno:</strong> ${studentName}<br>
-<strong>Questão:</strong> ${currentQuestion + 1} de ${questions.length}
-</div>
-
-<div class="question">${q.question}</div>
-
-${q.options.map((option,index)=>
-`<button class="option" onclick="selectAnswer(${index})">${option}</button>`
-).join("")}
-
-<div class="feedback" id="feedback"></div>
-
-<button class="btn next-btn" id="nextBtn" onclick="nextQuestion()">
-Próxima questão
-</button>
-`;
-
+function showFooter() {
+  footerSection.classList.remove("hidden");
 }
 
-function selectAnswer(index){
-
-const q = questions[currentQuestion];
-
-const buttons = document.querySelectorAll(".option");
-
-const feedback = document.getElementById("feedback");
-
-const nextBtn = document.getElementById("nextBtn");
-
-buttons.forEach(btn => btn.disabled = true);
-
-const isCorrect = index === q.answer;
-
-studentAnswers[currentQuestion] = {
-questionNumber: currentQuestion + 1,
-question: q.question,
-selectedIndex: index,
-selectedAnswer: q.options[index],
-correctIndex: q.answer,
-correctAnswer: q.options[q.answer],
-isCorrect: isCorrect
-};
-
-if(isCorrect){
-
-buttons[index].classList.add("correct");
-
-feedback.innerHTML =
-`<strong>✅ Resposta correta!</strong><br><br>${q.explanation}`;
-
-score++;
-
-}else{
-
-buttons[index].classList.add("wrong");
-
-buttons[q.answer].classList.add("correct");
-
-feedback.innerHTML =
-`<strong>❌ Resposta errada.</strong><br><br>${q.explanation}`;
-
+function hideFooter() {
+  footerSection.classList.add("hidden");
 }
 
-feedback.style.display = "block";
-
-nextBtn.style.display = "inline-block";
-
+function clearScore() {
+  scoreElement.innerHTML = "";
 }
 
-function nextQuestion(){
-
-currentQuestion++;
-
-if(currentQuestion < questions.length){
-
-loadQuestion();
-
-}else{
-
-showResults();
-
+function optionLabel(index) {
+  return String.fromCharCode(65 + index);
 }
 
+function formatOption(index, text) {
+  return optionLabel(index) + ") " + text;
 }
 
-function showResults(){
+const ONE_POINT_QUESTION_INDEXES = [2, 4, 6, 9, 13];
 
-quiz.innerHTML = "";
-
-const percentage = Math.round((score / questions.length) * 100);
-
-scoreElement.innerHTML = `
-🎉 ${studentName}, você acertou ${score} de ${questions.length} questões!<br>
-Percentual: ${percentage}%
-`;
-
-const resultRows = studentAnswers.map(item => `
-<tr>
-<td>${item.questionNumber}</td>
-<td>${item.selectedAnswer}</td>
-<td>${item.correctAnswer}</td>
-<td>${item.isCorrect ? "Correta" : "Errada"}</td>
-</tr>
-`).join("");
-
-quiz.innerHTML = `
-<div class="student-info">
-<strong>Aluno:</strong> ${studentName}<br>
-<strong>Acertos:</strong> ${score} de ${questions.length}<br>
-<strong>Percentual:</strong> ${percentage}%
-</div>
-
-<table class="results-table">
-<thead>
-<tr>
-<th>Questão</th>
-<th>Resposta do aluno</th>
-<th>Gabarito correto</th>
-<th>Resultado</th>
-</tr>
-</thead>
-<tbody>
-${resultRows}
-</tbody>
-</table>
-
-<button class="btn" onclick="sendResultsToProfessor()">Enviar resultado para o professor</button>
-<button class="btn secondary-btn" onclick="copyResults()">Copiar gabarito</button>
-
-<div class="notice" id="sendNotice">
-<strong>Importante:</strong> o envio direto para o professor só funciona depois que a URL do Google Apps Script for configurada no código. O aluno não precisa ter e-mail.
-</div>
-`;
-
+function getQuestionPoints(index) {
+  return ONE_POINT_QUESTION_INDEXES.includes(index) ? 1 : 0.5;
 }
 
-function generateResultsText(){
-
-const percentage = Math.round((score / questions.length) * 100);
-
-let text = "";
-
-text += "Quiz OBR 2026 - 3º ano. ESC Robótica\n";
-text += "Aluno: " + studentName + "\n";
-text += "Acertos: " + score + " de " + questions.length + "\n";
-text += "Percentual: " + percentage + "%\n\n";
-text += "GABARITO DAS RESPOSTAS\n\n";
-
-studentAnswers.forEach(item => {
-text += "Questão " + item.questionNumber + "\n";
-text += "Pergunta: " + item.question + "\n";
-text += "Resposta do aluno: " + item.selectedAnswer + "\n";
-text += "Resposta correta: " + item.correctAnswer + "\n";
-text += "Resultado: " + (item.isCorrect ? "Correta" : "Errada") + "\n";
-text += "----------------------------------------\n";
-});
-
-return text;
-
+function getTotalPossiblePoints() {
+  return questions.reduce((sum, _q, index) => sum + getQuestionPoints(index), 0);
 }
 
-function buildPayload(){
-
-const percentage = Math.round((score / questions.length) * 100);
-
-return {
-quiz: "Quiz OBR 2026 - 3º ano. ESC Robótica",
-aluno: studentName,
-acertos: score,
-totalQuestoes: questions.length,
-percentual: percentage,
-dataHora: new Date().toLocaleString("pt-BR"),
-respostas: studentAnswers.map(item => ({
-questao: item.questionNumber,
-pergunta: item.question,
-respostaAluno: item.selectedAnswer,
-respostaCorreta: item.correctAnswer,
-resultado: item.isCorrect ? "Correta" : "Errada"
-}))
-};
-
+function getPointsEarned() {
+  return studentAnswers.reduce((sum, item, index) => sum + (item && item.isCorrect ? getQuestionPoints(index) : 0), 0);
 }
 
-function sendResultsToProfessor(){
-
-if(!GOOGLE_APPS_SCRIPT_URL || GOOGLE_APPS_SCRIPT_URL === "COLE_AQUI_A_URL_DO_APPS_SCRIPT"){
-alert("O envio ainda não foi configurado. O professor precisa colar a URL do Google Apps Script no código do quiz.");
-return;
+function getGradeNumber() {
+  return Number(getPointsEarned().toFixed(2));
 }
 
-const payload = buildPayload();
-const form = document.createElement("form");
-form.method = "POST";
-form.action = GOOGLE_APPS_SCRIPT_URL;
-form.target = "hidden_iframe";
-form.style.display = "none";
-
-const input = document.createElement("input");
-input.type = "hidden";
-input.name = "payload";
-input.value = JSON.stringify(payload);
-form.appendChild(input);
-
-document.body.appendChild(form);
-form.submit();
-
-document.getElementById("sendNotice").innerHTML =
-"<strong>Resultado enviado.</strong> Se a planilha do professor estiver configurada corretamente, o registro aparecerá lá.";
-
+function getGradePercentage() {
+  const total = getTotalPossiblePoints();
+  return total > 0 ? Math.round((getGradeNumber() / total) * 100) : 0;
 }
 
-function copyResults(){
-
-const text = generateResultsText();
-
-navigator.clipboard.writeText(text).then(function(){
-alert("Gabarito copiado. Agora você pode colar no WhatsApp, e-mail ou outro local.");
-}).catch(function(){
-alert("Não foi possível copiar automaticamente. Selecione o texto do resultado e copie manualmente.");
-});
-
+function formatDecimal(value) {
+  return Number(value).toFixed(2).replace(".", ",");
 }
 
+function getScoringRuleText() {
+  return "5 questões valem 1,0 ponto e 10 questões valem 0,5 ponto. Total: 10 pontos.";
+}
+
+
+function renderHome() {
+  showHero();
+  showFooter();
+  clearScore();
+  selectedGrade = null;
+  selectedLevel = null;
+  questions = [];
+  currentQuestion = 0;
+  score = 0;
+  studentAnswers = [];
+  studentName = "";
+  resultsAlreadySent = false;
+
+  app.innerHTML = `
+    <h2 class="section-title">Escolha seu ano escolar</h2>
+    <p class="section-subtitle">Cada ano escolar tem três níveis: fácil, médio e difícil.</p>
+
+    <div class="grid">
+      ${gradeCard("3", "3º ano", "Quizzes disponíveis nos três níveis.", "🤖", "blue")}
+      ${gradeCard("4", "4º ano", "Quizzes disponíveis nos três níveis.", "⚙️", "green")}
+      ${gradeCard("5", "5º ano", "Quizzes disponíveis nos três níveis.", "🚀", "orange")}
+    </div>
+  `;
+}
+
+function gradeCard(grade, title, text, icon, color) {
+  return `
+    <button class="card-btn" onclick="chooseGrade('${grade}')">
+      <span class="badge ${color}">Ano escolar</span>
+      <h3>${title}</h3>
+      <p>${text}</p>
+      <span class="big-icon">${icon}</span>
+    </button>
+  `;
+}
+
+function chooseGrade(grade) {
+  hideHero();
+  hideFooter();
+  selectedGrade = grade;
+  clearScore();
+
+  app.innerHTML = `
+    <h2 class="section-title">${grade}º ano: escolha o nível</h2>
+    <p class="section-subtitle">Selecione a dificuldade do treino. Ao final, o resultado poderá ser enviado para a planilha do professor.</p>
+
+    <div class="grid">
+      ${levelCard("facil")}
+      ${levelCard("medio")}
+      ${levelCard("dificil")}
+    </div>
+
+    <div class="btn-row">
+      <button class="btn outline" onclick="renderHome()">← Voltar aos anos escolares</button>
+    </div>
+  `;
+}
+
+function levelCard(level) {
+  const count = QUIZ_DATA[selectedGrade][level].length;
+  const disabledClass = count === 0 ? " disabled" : "";
+  const action = count === 0 ? `showComingSoon('${level}')` : `selectLevel('${level}')`;
+  const label = LEVEL_LABELS[level];
+  const badge = LEVEL_BADGES[level];
+
+  return `
+    <button class="card-btn${disabledClass}" onclick="${action}">
+      <span class="badge ${badge}">${label}</span>
+      <h3>${count > 0 ? count + " questões" : "Em breve"}</h3>
+      <p>${count > 0 ? LEVEL_DESCRIPTIONS[level] : "Este nível ainda será liberado."}</p>
+      <span class="big-icon">${level === "facil" ? "🟢" : level === "medio" ? "🟡" : "🔴"}</span>
+    </button>
+  `;
+}
+
+function showComingSoon(level) {
+  hideHero();
+  hideFooter();
+  app.innerHTML = `
+    <h2 class="section-title">${selectedGrade}º ano • Nível ${LEVEL_LABELS[level]}</h2>
+    <p class="section-subtitle">Esta área já está pronta, mas as questões ainda não foram cadastradas.</p>
+
+    <div class="student-info">
+      <strong>Em breve:</strong> este treino ainda está sendo preparado.
+    </div>
+
+    <div class="btn-row">
+      <button class="btn outline" onclick="chooseGrade('${selectedGrade}')">← Voltar aos níveis</button>
+      <button class="btn" onclick="renderHome()">Voltar ao início</button>
+    </div>
+  `;
+}
+
+function selectLevel(level) {
+  hideHero();
+  hideFooter();
+  selectedLevel = level;
+  questions = QUIZ_DATA[selectedGrade][selectedLevel];
+  currentQuestion = 0;
+  score = 0;
+  studentAnswers = [];
+  studentName = "";
+  resultsAlreadySent = false;
+  clearScore();
+  renderStartScreen();
+}
+
+function renderStartScreen() {
+  app.innerHTML = `
+    <h2 class="section-title">${selectedGrade}º ano • Nível ${LEVEL_LABELS[selectedLevel]}</h2>
+    <p class="section-subtitle">Digite seu nome para começar. O resultado será identificado na planilha do professor.</p>
+
+    <div class="student-info">
+      <label for="studentName">Nome do aluno:</label>
+      <input type="text" id="studentName" placeholder="Exemplo: Maria Silva" autocomplete="name">
+      <button class="btn green" onclick="startQuiz()">Começar quiz</button>
+      <p class="small">O aluno não precisa ter e-mail. Basta responder e clicar no botão de envio ao final.</p>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn outline" onclick="chooseGrade('${selectedGrade}')">← Voltar aos níveis</button>
+    </div>
+  `;
+
+  setTimeout(() => {
+    const input = document.getElementById("studentName");
+    if(input) input.focus();
+  }, 100);
+}
+
+function startQuiz() {
+  const nameInput = document.getElementById("studentName");
+  studentName = nameInput.value.trim();
+
+  if(studentName === "") {
+    alert("Digite seu nome antes de começar o quiz.");
+    nameInput.focus();
+    return;
+  }
+
+  loadQuestion();
+}
+
+function loadQuestion() {
+  const q = questions[currentQuestion];
+  const progress = Math.round(((currentQuestion) / questions.length) * 100);
+
+  app.innerHTML = `
+    <div class="student-info">
+      <strong>Aluno:</strong> ${escapeHtml(studentName)}<br>
+      <strong>Ano escolar:</strong> ${selectedGrade}º ano<br>
+      <strong>Nível:</strong> ${LEVEL_LABELS[selectedLevel]}<br>
+      <strong>Questão:</strong> ${currentQuestion + 1} de ${questions.length}<br>
+      <strong>Valor da questão:</strong> ${formatDecimal(getQuestionPoints(currentQuestion))} ponto
+    </div>
+
+    <div class="progress-wrap">
+      <div class="progress-bar"><div class="progress-fill" style="width:${progress}%"></div></div>
+    </div>
+
+    <div class="area-pill">Área: ${escapeHtml(q.area || "Robótica")}</div>
+    <div class="question">${escapeHtml(q.question)}</div>
+
+    ${q.options.map((option,index)=>
+      `<button class="option" onclick="selectAnswer(${index})">${escapeHtml(formatOption(index, option))}</button>`
+    ).join("")}
+
+    <div class="feedback" id="feedback"></div>
+
+    <button class="btn orange hidden" id="nextBtn" onclick="nextQuestion()">Próxima questão</button>
+  `;
+}
+
+function selectAnswer(index) {
+  const q = questions[currentQuestion];
+  const buttons = document.querySelectorAll(".option");
+  const feedback = document.getElementById("feedback");
+  const nextBtn = document.getElementById("nextBtn");
+
+  buttons.forEach(btn => btn.disabled = true);
+
+  const isCorrect = index === q.answer;
+  const selectedText = formatOption(index, q.options[index]);
+  const correctText = formatOption(q.answer, q.options[q.answer]);
+
+  studentAnswers[currentQuestion] = {
+    questionNumber: currentQuestion + 1,
+    area: q.area || "Robótica",
+    points: getQuestionPoints(currentQuestion),
+    question: q.question,
+    selectedIndex: index,
+    selectedLetter: optionLabel(index),
+    selectedAnswer: selectedText,
+    correctIndex: q.answer,
+    correctLetter: optionLabel(q.answer),
+    correctAnswer: correctText,
+    isCorrect: isCorrect
+  };
+
+  if(isCorrect) {
+    buttons[index].classList.add("correct");
+    feedback.innerHTML = `<strong>✅ Resposta correta!</strong><br><br>${escapeHtml(q.explanation)}`;
+    score++;
+  } else {
+    buttons[index].classList.add("wrong");
+    buttons[q.answer].classList.add("correct");
+    feedback.innerHTML = `<strong>❌ Resposta errada.</strong><br><br>${escapeHtml(q.explanation)}`;
+  }
+
+  feedback.style.display = "block";
+  nextBtn.classList.remove("hidden");
+
+  const progressFill = document.querySelector(".progress-fill");
+  if(progressFill) {
+    progressFill.style.width = Math.round(((currentQuestion + 1) / questions.length) * 100) + "%";
+  }
+}
+
+function nextQuestion() {
+  currentQuestion++;
+
+  if(currentQuestion < questions.length) {
+    loadQuestion();
+  } else {
+    showResults();
+  }
+}
+
+
+function performanceMessage(percentage) {
+  if(percentage >= 85) return "Excelente desempenho. Continue treinando para manter esse ritmo.";
+  if(percentage >= 70) return "Bom desempenho. Revise as questões erradas para melhorar ainda mais.";
+  if(percentage >= 50) return "Desempenho intermediário. Vale refazer o nível depois de revisar os conceitos.";
+  return "Esse resultado mostra onde estudar mais. O importante é treinar, errar, revisar e tentar novamente.";
+}
+
+function renderPerformanceChart(percentage) {
+  const wrong = questions.length - score;
+  const acertosPercent = Math.round((score / questions.length) * 100);
+  const wrongPercent = 100 - acertosPercent;
+  const grade = getGradeNumber();
+  const totalPoints = getTotalPossiblePoints();
+
+  return `
+    <div class="performance-chart">
+      <div class="donut" style="--percent:${percentage}%">
+        <span>${percentage}%</span>
+      </div>
+      <div class="performance-bars">
+        <div>
+          <div class="bar-label"><span>Nota final</span><span class="grade-highlight">${formatDecimal(grade)} / ${formatDecimal(totalPoints)}</span></div>
+          <div class="metric-bar"><div class="metric-fill correct-fill" style="width:${percentage}%"></div></div>
+        </div>
+        <div>
+          <div class="bar-label"><span>Acertos</span><span>${score} de ${questions.length}</span></div>
+          <div class="metric-bar"><div class="metric-fill correct-fill" style="width:${acertosPercent}%"></div></div>
+        </div>
+        <div>
+          <div class="bar-label"><span>Erros</span><span>${wrong} de ${questions.length}</span></div>
+          <div class="metric-bar"><div class="metric-fill wrong-fill" style="width:${wrongPercent}%"></div></div>
+        </div>
+        <p class="performance-message">Pontuação: ${getScoringRuleText()} ${performanceMessage(percentage)}</p>
+      </div>
+    </div>
+  `;
+}
+
+function showResults() {
+  hideHero();
+  hideFooter();
+  const percentage = getGradePercentage();
+  const acertosPercent = Math.round((score / questions.length) * 100);
+  const grade = getGradeNumber();
+  const totalPoints = getTotalPossiblePoints();
+
+  scoreElement.innerHTML = `🎉 ${escapeHtml(studentName)}, você acertou ${score} de ${questions.length} questões!<br>Nota: ${formatDecimal(grade)} / ${formatDecimal(totalPoints)}`;
+
+  const resultRows = studentAnswers.map(item => `
+    <tr>
+      <td>${item.questionNumber}</td>
+      <td>${escapeHtml(item.area)}</td>
+      <td>${formatDecimal(item.points)}</td>
+      <td>${escapeHtml(item.selectedAnswer)}</td>
+      <td>${escapeHtml(item.correctAnswer)}</td>
+      <td>${item.isCorrect ? "Correta" : "Errada"}</td>
+    </tr>
+  `).join("");
+
+  app.innerHTML = `
+    <h2 class="section-title">Resultado do treino</h2>
+    <p class="section-subtitle">Confira o desempenho e envie para a planilha do professor.</p>
+
+    <div class="student-info">
+      <strong>Aluno:</strong> ${escapeHtml(studentName)}<br>
+      <strong>Ano escolar:</strong> ${selectedGrade}º ano<br>
+      <strong>Nível:</strong> ${LEVEL_LABELS[selectedLevel]}<br>
+      <strong>Acertos:</strong> ${score} de ${questions.length}<br>
+      <strong>Percentual de acertos:</strong> ${acertosPercent}%<br>
+      <strong>Nota final:</strong> ${formatDecimal(grade)} / ${formatDecimal(totalPoints)}<br>
+      <span class="points-note">${getScoringRuleText()}</span>
+    </div>
+
+    ${renderPerformanceChart(percentage)}
+
+    <div class="results-table-wrap">
+      <table class="results-table">
+        <thead>
+          <tr>
+            <th>Questão</th>
+            <th>Área</th>
+            <th>Valor</th>
+            <th>Resposta do aluno</th>
+            <th>Gabarito correto</th>
+            <th>Resultado</th>
+          </tr>
+        </thead>
+        <tbody>${resultRows}</tbody>
+      </table>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn green" id="sendResultsBtn" onclick="sendResultsToProfessor(this)">Enviar resultado para o professor</button>
+      <button class="btn gray" onclick="copyResults()">Copiar gabarito</button>
+      <button class="btn outline" onclick="selectLevel(selectedLevel)">Refazer este nível</button>
+      <button class="btn outline" onclick="renderHome()">Voltar ao início</button>
+    </div>
+
+    <div class="notice" id="sendNotice">
+      <strong>Parabéns!</strong> 
+    </div>
+  `;
+}
+
+function generateResultsText() {
+  const percentage = getGradePercentage();
+  const acertosPercent = Math.round((score / questions.length) * 100);
+  const grade = getGradeNumber();
+  const totalPoints = getTotalPossiblePoints();
+  let text = "";
+
+  text += "Quiz OBR 2026 - ESC Robótica\n";
+  text += "Aluno: " + studentName + "\n";
+  text += "Ano escolar: " + selectedGrade + "º ano\n";
+  text += "Nível: " + LEVEL_LABELS[selectedLevel] + "\n";
+  text += "Acertos: " + score + " de " + questions.length + "\n";
+  text += "Percentual de acertos: " + acertosPercent + "%\n";
+  text += "Percentual da nota: " + percentage + "%\n";
+  text += "Nota final: " + formatDecimal(grade) + " / " + formatDecimal(totalPoints) + "\n";
+  text += "Pontuação: " + getScoringRuleText() + "\n\n";
+  text += "GABARITO DAS RESPOSTAS\n\n";
+
+  studentAnswers.forEach(item => {
+    text += "Questão " + item.questionNumber + "\n";
+    text += "Área: " + item.area + "\n";
+    text += "Valor: " + formatDecimal(item.points) + " ponto\n";
+    text += "Pergunta: " + item.question + "\n";
+    text += "Resposta do aluno: " + item.selectedAnswer + "\n";
+    text += "Resposta correta: " + item.correctAnswer + "\n";
+    text += "Resultado: " + (item.isCorrect ? "Correta" : "Errada") + "\n";
+    text += "----------------------------------------\n";
+  });
+
+  return text;
+}
+
+function buildPayload() {
+  const percentage = getGradePercentage();
+  const acertosPercent = Math.round((score / questions.length) * 100);
+  const grade = getGradeNumber();
+  const totalPoints = getTotalPossiblePoints();
+  const pointsEarned = getPointsEarned();
+
+  return {
+    quiz: "Quiz OBR 2026 - ESC Robótica",
+    anoEscolar: selectedGrade + "º ano",
+    nivel: LEVEL_LABELS[selectedLevel],
+    nivelCodigo: selectedLevel,
+    aluno: studentName,
+    acertos: score,
+    total: questions.length,
+    percentual: percentage,
+    percentualAcertos: acertosPercent,
+    nota: grade,
+    pontosObtidos: pointsEarned,
+    pontosPossiveis: totalPoints,
+    regraPontuacao: getScoringRuleText(),
+    dataHora: new Date().toLocaleString("pt-BR"),
+    respostas: studentAnswers.map(item => ({
+      questao: item.questionNumber,
+      area: item.area,
+      valorQuestao: item.points,
+      pergunta: item.question,
+      alternativaAluno: item.selectedLetter,
+      alternativaCorreta: item.correctLetter,
+      respostaAluno: item.selectedAnswer,
+      respostaCorreta: item.correctAnswer,
+      resultado: item.isCorrect ? "Correta" : "Errada"
+    }))
+  };
+}
+
+function sendResultsToProfessor(buttonElement) {
+  if(resultsAlreadySent) {
+    const notice = document.getElementById("sendNotice");
+    if(notice) notice.innerHTML = "<strong>Resultado já enviado.</strong> Para evitar duplicidade, este envio foi bloqueado.";
+    return;
+  }
+
+  if(!GOOGLE_APPS_SCRIPT_URL || GOOGLE_APPS_SCRIPT_URL === "COLE_AQUI_A_URL_DO_APPS_SCRIPT") {
+    alert("O envio ainda não foi configurado. O professor precisa colar a URL do Google Apps Script no código do quiz.");
+    return;
+  }
+
+  resultsAlreadySent = true;
+  if(buttonElement) {
+    buttonElement.disabled = true;
+    buttonElement.classList.add("hidden");
+  }
+
+  const payload = buildPayload();
+  const form = document.createElement("form");
+  form.method = "POST";
+  form.action = GOOGLE_APPS_SCRIPT_URL;
+  form.target = "hidden_iframe";
+  form.style.display = "none";
+
+  const input = document.createElement("input");
+  input.type = "hidden";
+  input.name = "payload";
+  input.value = JSON.stringify(payload);
+  form.appendChild(input);
+
+  document.body.appendChild(form);
+  form.submit();
+
+  const notice = document.getElementById("sendNotice");
+  notice.innerHTML = "<strong>Resultado enviado.</strong>";
+}
+
+function copyResults() {
+  const text = generateResultsText();
+
+  if(navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(function(){
+      alert("Gabarito copiado. Agora você pode colar no WhatsApp, e-mail ou outro local.");
+    }).catch(function(){
+      fallbackCopy(text);
+    });
+  } else {
+    fallbackCopy(text);
+  }
+}
+
+function fallbackCopy(text) {
+  const area = document.createElement("textarea");
+  area.value = text;
+  area.style.position = "fixed";
+  area.style.left = "-9999px";
+  document.body.appendChild(area);
+  area.focus();
+  area.select();
+
+  try {
+    document.execCommand("copy");
+    alert("Gabarito copiado. Agora você pode colar no WhatsApp ou outro local.");
+  } catch(e) {
+    alert("Não foi possível copiar automaticamente. Selecione o resultado e copie manualmente.");
+  }
+
+  document.body.removeChild(area);
+}
+
+function escapeHtml(text) {
+  return String(text)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+renderHome();
 </script>
-
 </body>
 </html>
