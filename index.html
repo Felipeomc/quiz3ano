@@ -242,6 +242,33 @@ h1 {
   border-color:#e5e7eb;
 }
 
+.card-btn.locked-level {
+  cursor:pointer;
+  opacity:.84;
+  border-style:dashed;
+  background:linear-gradient(135deg,#ffffff,#f8fafc);
+}
+
+.card-btn.locked-level:hover {
+  transform:translateY(-2px);
+  box-shadow:0 12px 24px rgba(15,23,42,.10);
+  border-color:var(--obr-orange);
+}
+
+.lock-pill {
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
+  margin-top:12px;
+  padding:7px 10px;
+  border-radius:999px;
+  background:#fff7ed;
+  border:1px solid #fed7aa;
+  color:#9a3412;
+  font-size:13px;
+  font-weight:900;
+}
+
 .card-btn .badge {
   display:inline-block;
   padding:6px 10px;
@@ -2596,6 +2623,9 @@ let score = 0;
 let studentName = "";
 let studentAnswers = [];
 let resultsAlreadySent = false;
+const LOCKED_LEVELS = ["medio", "dificil"];
+const UNLOCK_PASSWORD_HASH = 354772949;
+const unlockedLevelsThisSession = {};
 
 const app = document.getElementById("app");
 const scoreElement = document.getElementById("score");
@@ -2706,7 +2736,7 @@ function chooseGrade(grade) {
 
   app.innerHTML = `
     <h2 class="section-title">${grade}º ano: escolha o nível</h2>
-    <p class="section-subtitle">Selecione a dificuldade do treino. Ao final, o resultado poderá ser enviado para a planilha do professor.</p>
+    <p class="section-subtitle">O nível fácil fica liberado. Os níveis médio e difícil aparecem bloqueados e serão liberados pelo professor na aula presencial.</p>
 
     <div class="grid">
       ${levelCard("facil")}
@@ -2720,19 +2750,49 @@ function chooseGrade(grade) {
   `;
 }
 
+function isLevelLocked(level) {
+  return LOCKED_LEVELS.includes(level) && !unlockedLevelsThisSession[selectedGrade + "_" + level];
+}
+
+function simpleHash(text) {
+  let hash = 0;
+  for(let i = 0; i < text.length; i++) {
+    hash = ((hash << 5) - hash) + text.charCodeAt(i);
+    hash = hash | 0;
+  }
+  return Math.abs(hash);
+}
+
+function unlockLevel(level) {
+  const label = LEVEL_LABELS[level];
+  const typed = prompt(`Nível ${label} bloqueado. Digite a palavra-chave da aula para liberar:`);
+  if(typed === null) return;
+
+  if(simpleHash(typed.trim().toLowerCase()) === UNLOCK_PASSWORD_HASH) {
+    unlockedLevelsThisSession[selectedGrade + "_" + level] = true;
+    alert(`Nível ${label} liberado para esta aba.`);
+    chooseGrade(selectedGrade);
+    return;
+  }
+
+  alert("Palavra-chave incorreta. Peça a liberação ao professor.");
+}
+
 function levelCard(level) {
   const count = QUIZ_DATA[selectedGrade][level].length;
-  const disabledClass = count === 0 ? " disabled" : "";
-  const action = count === 0 ? `showComingSoon('${level}')` : `selectLevel('${level}')`;
+  const locked = count > 0 && isLevelLocked(level);
+  const disabledClass = count === 0 ? " disabled" : locked ? " locked-level" : "";
+  const action = count === 0 ? `showComingSoon('${level}')` : locked ? `unlockLevel('${level}')` : `selectLevel('${level}')`;
   const label = LEVEL_LABELS[level];
   const badge = LEVEL_BADGES[level];
 
   return `
     <button class="card-btn${disabledClass}" onclick="${action}">
-      <span class="badge ${badge}">${label}</span>
+      <span class="badge ${badge}">${locked ? "🔒 " : ""}${label}</span>
       <h3>${count > 0 ? count + " questões" : "Em breve"}</h3>
-      <p>${count > 0 ? LEVEL_DESCRIPTIONS[level] : "Este nível ainda será liberado."}</p>
-      <span class="big-icon">${level === "facil" ? "🟢" : level === "medio" ? "🟡" : "🔴"}</span>
+      <p>${count > 0 ? (locked ? "Bloqueado para a aula presencial. O professor libera com a palavra-chave." : LEVEL_DESCRIPTIONS[level]) : "Este nível ainda será liberado."}</p>
+      ${locked ? `<span class="lock-pill">🔐 Liberar com palavra-chave</span>` : ""}
+      <span class="big-icon">${level === "facil" ? "🟢" : level === "medio" ? "🔒" : "🔐"}</span>
     </button>
   `;
 }
