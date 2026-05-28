@@ -2751,7 +2751,7 @@ function chooseGrade(grade) {
 }
 
 function isLevelLocked(level) {
-  return LOCKED_LEVELS.includes(level) && !unlockedLevelsThisSession[selectedGrade + "_" + level];
+  return false;//LOCKED_LEVELS.includes(level) && !unlockedLevelsThisSession[selectedGrade + "_" + level];
 }
 
 function simpleHash(text) {
